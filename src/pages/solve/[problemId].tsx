@@ -27,7 +27,7 @@ function Solve() {
 
         <main className="relative grid grid-cols-12">
           <ProblemDescription />
-          <TextEditor />
+          <TextEditor setChatVisible={setIsChatVisible} />
           <Footer />
         </main>
       </UserDataProvider>

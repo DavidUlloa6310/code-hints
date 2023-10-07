@@ -22,7 +22,7 @@ Users' code output:
  {chat_history}\n
  User's input:
   {input}\n
- Make sure you answer in the format specified at the beginning! it should start with a leading '{', no text before it, and end with a trailing '}'`;
+ Make sure you answer in the format specified at the beginning!`;
 
 // define the output schema
 const outputParser = StructuredOutputParser.fromZodSchema(

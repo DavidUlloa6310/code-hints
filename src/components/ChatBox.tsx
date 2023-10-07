@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 import { useState } from "react";
 import Image from "next/image";
 import { useChat } from "@/hooks/useChat";
@@ -5,8 +6,8 @@ import Draggable from "react-draggable";
 import SuggestionChips from "./SuggestionChips";
 import MermaidGraph from "./MermaidGraph";
 import type { AgentMessage } from "@/schemas/chatSchemas";
-// import { useEffect } from "react";
-import dynamic from "next/dynamic";
+import { useEffect } from "react";
+import mermaid from "mermaid";
 // import mermaid from "mermaid";
 
 interface ChatBoxProps {
@@ -15,23 +16,6 @@ interface ChatBoxProps {
   userCodeOutput: string;
   setIsVisible: (isVisible: boolean) => void;
 }
-
-const testGraph = `
-      graph TD
-      Start --> Check_Sign
-      Check_Sign --> |Positive| Calculate_Integer_Part
-      Check_Sign --> |Negative| Add_Negative_Sign
-      Calculate_Integer_Part --> Calculate_Remainder
-      Calculate_Remainder --> |Remainder=0| Construct_Result
-      Calculate_Remainder --> |Remainder>0| Initialize_Variables
-      Initialize_Variables --> Calculate_Next_Digit
-      Calculate_Next_Digit --> Update_Fractional_Part
-      Update_Fractional_Part --> Calculate_Remainder
-      Construct_Result --> Add_Repeating_Parentheses
-      Add_Negative_Sign --> Calculate_Integer_Part
-      Add_Repeating_Parentheses --> Return_Result
-      Calculate_Integer_Part --> Return_Result
-      `;
 
 const ChatBubble = ({
   content,
@@ -81,12 +65,13 @@ export function ChatBox({
   userCodeOutput,
   setIsVisible,
 }: ChatBoxProps) {
-  const DynamicMermaidGraph = dynamic(
-    () => import("../components/MermaidGraph"),
-    {
-      ssr: false, // Disable server-side rendering for this component
-    },
-  );
+  const [graph, setGraph] = useState<string>(`
+  graph TD
+A["Input: nums = [2,7,11,15], target = 9"] --> B["Check nums[0] + nums[1] == target"]
+B -->|Yes| C["Output: [0,1]"]
+B -->|No| D{Check next pair}
+D --> B
+  `);
 
   const { chat, sendChat, isLoading } = useChat({
     problemId,
@@ -95,14 +80,14 @@ export function ChatBox({
   });
   const [message, setMessage] = useState("");
 
-  // useEffect(() => {
-  //   mermaid.initialize({ startOnLoad: true });
+  useEffect(() => {
+    mermaid.initialize({ startOnLoad: true });
 
-  //   mermaid.setParseErrorHandler((err, hash) => {
-  //     console.log(err);
-  //     console.log(hash);
-  //   });
-  // }, []);
+    mermaid.setParseErrorHandler((err, hash) => {
+      console.log(err);
+      console.log(hash);
+    });
+  }, []);
 
   const handleSend = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -112,8 +97,8 @@ export function ChatBox({
   };
 
   return (
-    <Draggable handle=".handle">
-      <div className="absolute z-10 flex min-h-[350px] min-w-[500px] max-w-[500] flex-col rounded-md bg-darkBlue p-4 shadow-lg">
+    <Draggable handle=".handle" defaultPosition={{ x: 200, y: 50 }}>
+      <div className="absolute z-20 flex max-h-[700px] min-h-[350px] min-w-[500px] max-w-[600px] flex-col rounded-md bg-darkBlue p-4 shadow-lg">
         <div className="handle m-0 flex flex-row-reverse justify-between">
           <div className="flex">
             <div
@@ -154,7 +139,9 @@ export function ChatBox({
             />
           )}
 
-          <DynamicMermaidGraph graph={testGraph} />
+          {typeof window !== undefined && graph && (
+            <MermaidGraph graph={graph as string} />
+          )}
 
           {isLoading && (
             <div className="flex justify-center">

@@ -22,8 +22,14 @@ export default async function handler(
 
   const supportedLanguages = ["python3"];
 
+  console.log(req.body);
+
   try {
-    ({ problemId, language, code: userCode } = req.body as RequestBdoy);
+    ({
+      problemId,
+      language,
+      code: userCode,
+    } = JSON.parse(req.body as string) as RequestBdoy);
   } catch {
     return res.status(400);
   }
@@ -69,6 +75,8 @@ export default async function handler(
   }
   // capture the output from the solutions script
   const solution = JSON.parse(solutionRunner.toString("utf8")) as unknown;
+
+  console.log(solution);
 
   return res.status(200).json({ solution });
 }

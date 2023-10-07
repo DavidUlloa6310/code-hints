@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useUserDataContext } from "@/hooks/useUserData";
 
 import { useMonaco } from "@monaco-editor/react";
-
+import { NavBar } from "@/components/NavBar";
 import { Editor } from "@monaco-editor/react";
 import { useProblemDataContext } from "@/hooks/useProblemData";
 import { ProblemSchema } from "@/schemas/problemSchema";
@@ -18,7 +18,11 @@ function getStarterCode(problemData: ProblemSchema): string {
   return starterCode;
 }
 
-function TextEditor() {
+function TextEditor({
+  setChatVisible,
+}: {
+  setChatVisible: (visible: boolean) => void;
+}) {
   const { problemData } = useProblemDataContext()!;
   const { setUserCode } = useUserDataContext();
   const monaco = useMonaco();
@@ -49,8 +53,9 @@ function TextEditor() {
   }, [monaco]);
 
   return (
-    <div className=" relative col-span-7 col-start-6 h-[88vh] bg-blue-500">
-      <div className="block h-10 bg-grayBlue"></div>
+    <div className="col-span-7 col-start-6 h-[88vh] bg-blue-500">
+      <NavBar setChatVisible={setChatVisible} />
+      <div className="block flex h-10 justify-center bg-grayBlue"></div>
       <Editor
         onChange={(value, event) => {
           setUserCode(value ?? "");

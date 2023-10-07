@@ -1,41 +1,38 @@
-import { useEffect } from "react";
+// MermaidGraph.tsx
+import React, { useEffect, useRef } from "react";
 import mermaid from "mermaid";
-// import "mermaid/dist/mermaid.css";
 
 interface MermaidGraphProps {
   graph: string;
 }
 
-export default function MermaidGraph({ graph }: MermaidGraphProps) {
-  useEffect(() => {
-    // if (typeof window !== "undefined") {
-    mermaid.initialize({ startOnLoad: true });
-    mermaid.setParseErrorHandler((err, hash) => {
-      console.log(err);
-      console.log(hash);
-    });
-    // }
-  }, []);
-  //   const graph = `
-  //     graph TD
-  //     Start --> Check_Sign
-  //     Check_Sign --> |Positive| Calculate_Integer_Part
-  //     Check_Sign --> |Negative| Add_Negative_Sign
-  //     Calculate_Integer_Part --> Calculate_Remainder
-  //     Calculate_Remainder --> |Remainder=0| Construct_Result
-  //     Calculate_Remainder --> |Remainder>0| Initialize_Variables
-  //     Initialize_Variables --> Calculate_Next_Digit
-  //     Calculate_Next_Digit --> Update_Fractional_Part
-  //     Update_Fractional_Part --> Calculate_Remainder
-  //     Construct_Result --> Add_Repeating_Parentheses
-  //     Add_Negative_Sign --> Calculate_Integer_Part
-  //     Add_Repeating_Parentheses --> Return_Result
-  //     Calculate_Integer_Part --> Return_Result
-  //     `;
+const MermaidGraph: React.FC<MermaidGraphProps> = ({ graph }) => {
+  const graphRef = useRef<HTMLDivElement | null>(null);
 
-  return (
-    <div>
-      <pre className="mermaid">{graph}</pre>
-    </div>
-  );
-}
+  useEffect(() => {
+    const renderGraph = async () => {
+      if (graphRef.current) {
+        try {
+          const renderResult = await mermaid.mermaidAPI.render(
+            "graphDiv",
+            graph,
+          );
+          if (graphRef.current) {
+            // additional check in case component unmounted
+            graphRef.current.innerHTML = renderResult.svg; // adjusted line
+          }
+        } catch (error) {
+          console.error("Mermaid graph rendering failed:", error);
+        }
+      }
+    };
+
+    renderGraph().catch((error) => {
+      console.error("Error in renderGraph:", error);
+    });
+  }, [graph]);
+
+  return <div ref={graphRef} />;
+};
+
+export default MermaidGraph;

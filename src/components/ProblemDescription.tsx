@@ -58,7 +58,7 @@ function ProblemDescription() {
   return (
     <section className="col-span-5 flex flex-col items-center justify-center bg-babyBlue">
       <LogoHeader />
-      <article className="h-[85vh] w-[90%] overflow-y-scroll rounded-md bg-white bg-opacity-80 p-5">
+      <article className=" h-[85vh] w-[90%] overflow-y-scroll rounded-md bg-white bg-opacity-80 p-5">
         <div className="flex w-full flex-row items-center justify-between">
           <h3 className=" font-titan">{`Question #${(
             Number(problemData?.frontendQuestionId) + 1

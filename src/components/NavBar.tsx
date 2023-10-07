@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { HiOutlineArrowSmRight } from "react-icons/hi";
 
@@ -23,15 +24,15 @@ export function NavBar({
     setChatVisible(!isChatActive);
   };
 
-  return (
+  const content = (
     <div
-      className={`flex h-11 w-4/5 items-center ${
-        isActive ? "fixed" : "hidden"
-      } shadow-md" rounded-full bg-darkBlue`}
+      className={`max-w-4/5 top-3 z-[19] flex h-11 min-w-[50%] items-center ${
+        isActive ? "fixed" : "fixed opacity-0"
+      } shadow-md" justify-between rounded-full bg-darkBlue`}
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
     >
-      <div className="justify-right flex items-center">
+      <div className="flex items-center justify-between">
         <div className="flex items-center">
           <button
             className="pl-4 pr-2 font-titan text-sm text-darkGrayText"
@@ -61,4 +62,6 @@ export function NavBar({
       </div>
     </div>
   );
+
+  return content;
 }

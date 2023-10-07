@@ -6,10 +6,24 @@ import { useUserDataContext } from "@/hooks/useUserData";
 export default function Footer() {
   const [showTags, setShowTags] = useState(false);
   const { problemData } = useProblemDataContext()!;
-  const { userCode } = useUserDataContext();
+  const { userCode, codeOutput, setCodeOutput } = useUserDataContext();
 
   async function submitCode() {
-    //
+    const request = await fetch("/api/code/submit", {
+      method: "POST",
+      body: JSON.stringify({
+        problemId: problemData?.frontendQuestionId,
+        language: "python3",
+        code: userCode,
+      }),
+    });
+
+    if (request.ok) {
+      const response = (await request.json()) as string;
+      setCodeOutput("");
+    }
+
+    console.log(response);
   }
 
   return (

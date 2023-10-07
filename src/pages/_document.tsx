@@ -28,6 +28,7 @@ class MyDocument extends Document {
           /> */}
         </Head>
         <body>
+          <div className="z-20" id="navbar-div" />
           <Main />
           <NextScript />
         </body>
