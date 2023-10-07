@@ -3,7 +3,24 @@ import { type Config } from "tailwindcss";
 export default {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        titan: "Titan One",
+        roboto: "Roboto",
+      },
+      colors: {
+        babyBlue: "#E3FCFF",
+        lightGreen: "#88EF1C",
+        red: "#DE2A2A",
+        yellowAlert: "#FED004",
+        lightGrayText: "#A3ABA3",
+        darkGray: "#5F5858",
+        darkBlue: "#0F1A1F",
+        nonWhite: "#DEDEDE",
+        lightBlue: "#8BA8B5",
+        darkGrayText: "#ADACA7",
+      },
+    },
   },
   plugins: [],
 } satisfies Config;
