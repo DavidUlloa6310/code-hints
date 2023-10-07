@@ -17,6 +17,9 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  publicRuntimeConfig: {
+    problemSetPath: "/problem_set.json",
+  },
 };
 
 export default config;
