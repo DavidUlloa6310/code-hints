@@ -5,23 +5,31 @@ import { useMonaco } from "@monaco-editor/react";
 import { NavBar } from "@/components/NavBar";
 import { Editor } from "@monaco-editor/react";
 import { useProblemDataContext } from "@/hooks/useProblemData";
-import { ProblemSchema } from "@/schemas/problemSchema";
+import type { ProblemSchema } from "@/schemas/problemSchema";
 
 function getStarterCode(problemData: ProblemSchema): string {
-  const starterCode: string | undefined = problemData?.starterCodes.filter(
-    (problem) => problem?.lang === "Python",
-  )[0]?.code;
-
-  if (starterCode == null) {
-    return "";
+  for (const starterCode of problemData.starterCodes) {
+    if (starterCode.lang.toLowerCase() === "python3") {
+      return starterCode.code;
+    }
   }
-  return starterCode;
+  return "";
+  // const starterCode: string | undefined = problemData?.starterCodes.filter(
+  //   (problem) => problem?.lang === "Python",
+  // )[0]?.code;
+
+  // if (starterCode == null) {
+  //   return "";
+  // }
+  // return starterCode;
 }
 
 function TextEditor({
   setChatVisible,
+  isChatVisible,
 }: {
   setChatVisible: (visible: boolean) => void;
+  isChatVisible: boolean;
 }) {
   const { problemData } = useProblemDataContext()!;
   const { setUserCode } = useUserDataContext();
@@ -52,21 +60,23 @@ function TextEditor({
     monaco.editor.setTheme("CodeHintsTheme");
   }, [monaco]);
 
-  return (
-    <div className="col-span-7 col-start-6 h-[88vh] bg-blue-500">
-      <NavBar setChatVisible={setChatVisible} />
-      <div className="block flex h-10 justify-center bg-grayBlue"></div>
-      <Editor
-        onChange={(value, event) => {
-          setUserCode(value ?? "");
-        }}
-        theme="CodeHintsTheme"
-        className="absolute left-0 top-0 h-full w-full"
-        defaultLanguage="python"
-        defaultValue={getStarterCode(problemData!)}
-      />
+  return problemData ? (
+    <div className="relative flex h-full w-full flex-col bg-darkBlue">
+      <NavBar setChatVisible={setChatVisible} isChatVisible={isChatVisible} />
+      <div className="h-10 justify-center bg-grayBlue"></div>
+      <div className="h-[11*1rem] flex-grow overflow-auto">
+        <Editor
+          onChange={(value, event) => {
+            setUserCode(value ?? "");
+          }}
+          theme="CodeHintsTheme"
+          className="h-full w-full"
+          defaultLanguage="python"
+          defaultValue={getStarterCode(problemData)}
+        />
+      </div>
     </div>
-  );
+  ) : null;
 }
 
 export default TextEditor;

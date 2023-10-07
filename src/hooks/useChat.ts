@@ -1,19 +1,21 @@
 import type { AgentMessage } from "@/schemas/chatSchemas";
 import { useState } from "react";
+import { useUserDataContext } from "./useUserData";
+import { useProblemDataContext } from "./useProblemData";
 
-interface UseChatProps {
-  problemId: string;
-  userCode: string;
-  userCodeOutput: string;
-}
+const INITIAL_CHAT: AgentMessage[] = [
+  {
+    agent: "bot",
+    format: "text",
+    content: "Hello, I'm the bot! How can I help you?",
+  },
+];
 
-export const useChat = ({
-  problemId,
-  userCode,
-  userCodeOutput,
-}: UseChatProps) => {
-  const [chat, setChat] = useState<AgentMessage[]>([]);
+export const useChat = () => {
+  const [chat, setChat] = useState<AgentMessage[]>(INITIAL_CHAT);
   const [isLoading, setIsLoading] = useState(false);
+  const { userCode, codeOutput } = useUserDataContext();
+  const { problemData } = useProblemDataContext();
 
   const sendChat = async (message: string) => {
     setIsLoading(true);
@@ -38,8 +40,8 @@ export const useChat = ({
         messageHistory: chat, // Use the current chat state
         currentMessage: message,
         userCode: userCode,
-        userCodeOutput: userCodeOutput,
-        problemId: problemId,
+        userCodeOutput: codeOutput,
+        problemId: problemData!.frontendQuestionId,
       }),
     });
 

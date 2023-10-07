@@ -4,31 +4,36 @@ import ProblemDescription from "@/components/ProblemDescription";
 import ProblemDataProvider from "@/hooks/useProblemData";
 import TextEditor from "@/components/TextEditor";
 import { ChatBox } from "@/components/ChatBox";
-import { NavBar } from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { UserDataProvider } from "@/hooks/useUserData";
+import Welcome from "@/components/Welcome";
 
 function Solve() {
-  const [isChatVisible, setIsChatVisible] = useState<boolean>(true);
+  const [isChatVisible, setIsChatVisible] = useState<boolean>(false);
   const router = useRouter();
   const { problemId } = router.query;
 
   return (
     <ProblemDataProvider>
+      {problemId === "0" && <Welcome />}
       <UserDataProvider>
-        {isChatVisible && (
-          <ChatBox
-            setIsVisible={setIsChatVisible}
-            problemId={problemId as string}
-            userCode=""
-            userCodeOutput=""
-          />
-        )}
+        {isChatVisible && <ChatBox setIsVisible={setIsChatVisible} />}
 
-        <main className="relative grid grid-cols-12">
-          <ProblemDescription />
-          <TextEditor setChatVisible={setIsChatVisible} />
-          <Footer />
+        <main className="grid-rows-12 grid h-screen grid-cols-12">
+          <div className="col-span-4">
+            <ProblemDescription />
+          </div>
+          <div className="grid-rows-12 col-span-8 grid h-screen">
+            <div className="row-span-11 h-full">
+              <TextEditor
+                setChatVisible={setIsChatVisible}
+                isChatVisible={isChatVisible}
+              />
+            </div>
+            <div className="row-span-1 w-full" style={{ marginBottom: -2 }}>
+              <Footer />
+            </div>
+          </div>
         </main>
       </UserDataProvider>
     </ProblemDataProvider>

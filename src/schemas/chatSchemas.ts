@@ -6,7 +6,7 @@ export type ChatSchema = z.infer<typeof chatSchema>;
 
 export const agentMessage = z.object({
   agent: z.enum(["human", "bot"]),
-  format: z.enum(["text", "mermaid"]),
+  format: z.enum(["text", "graphviz"]),
   content: z.string(),
 });
 

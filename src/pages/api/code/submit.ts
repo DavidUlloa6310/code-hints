@@ -22,16 +22,18 @@ export default async function handler(
 
   const supportedLanguages = ["python3"];
 
-  console.log(req.body);
-
   try {
-    ({
-      problemId,
-      language,
-      code: userCode,
-    } = JSON.parse(req.body as string) as RequestBdoy);
+    if (typeof req.body == "string") {
+      ({
+        problemId,
+        language,
+        code: userCode,
+      } = JSON.parse(req.body) as RequestBdoy);
+    } else {
+      ({ problemId, language, code: userCode } = req.body as RequestBdoy);
+    }
   } catch {
-    return res.status(400);
+    return res.status(400).end();
   }
 
   // if the request did not include the problemId, language or code
@@ -63,20 +65,26 @@ export default async function handler(
   const problem = JSON.stringify(await problemReq.json());
   let solutionRunner: Buffer;
 
+  const encoded_problem = btoa(problem);
+  const encoded_user_code = btoa(userCode);
+
   try {
     // execute the python file that checks the user solution
     solutionRunner = execSync(
-      `python3 ${SOLUTION_RUNNER_SCRIPT} ${btoa(problem)} ${btoa(userCode)}`,
+      `python3 ${SOLUTION_RUNNER_SCRIPT} ${encoded_problem} ${encoded_user_code}`,
     );
   } catch (e) {
-    /* eslint-disable @typescript-eslint/no-unsafe-call */
-    const message = e.toString("utf8") as string;
+    let message = e.toString("utf8") as string;
+    message = message.replace(encoded_problem, "");
+    message = message.replace(encoded_user_code, "");
+
     return res.status(200).json({ error: message });
   }
   // capture the output from the solutions script
-  const solution = JSON.parse(solutionRunner.toString("utf8")) as unknown;
-
-  console.log(solution);
+  const solution = JSON.parse(solutionRunner.toString("utf8")) as Record<
+    string,
+    string
+  >;
 
   return res.status(200).json({ solution });
 }

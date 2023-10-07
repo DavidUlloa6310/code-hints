@@ -8,8 +8,10 @@ interface ProblemDataProviderValues {
   > | null;
 }
 
-const ProblemDataContext =
-  React.createContext<ProblemDataProviderValues | null>(null);
+const ProblemDataContext = React.createContext<ProblemDataProviderValues>({
+  problemData: null,
+  setProblemData: null,
+});
 
 export function useProblemDataContext() {
   return useContext(ProblemDataContext);

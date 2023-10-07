@@ -1,7 +1,18 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { useState } from "react";
 import Image from "next/image";
 import { useProblemDataContext } from "@/hooks/useProblemData";
 import { useUserDataContext } from "@/hooks/useUserData";
+import { useEffect } from "react";
+
+interface Response {
+  solution?: Array<{
+    testCase: string;
+    expected: string;
+    output: string;
+  }>;
+  error?: string;
+}
 
 export default function Footer() {
   const [showTags, setShowTags] = useState(false);
@@ -19,15 +30,31 @@ export default function Footer() {
     });
 
     if (request.ok) {
-      const response = (await request.json()) as string;
-      setCodeOutput("");
-    }
+      const response = (await request.json()) as Response;
+      let prompt = "";
 
-    console.log(response);
+      if (response.error) {
+        prompt += `I ran it and got this error ${JSON.stringify(
+          response.error,
+        )}`;
+      } else {
+        response.solution!.forEach(({ testCase, expected, output }) => {
+          prompt += `This is the input: \"${testCase}\"\n`;
+          prompt += `This is the correct output: \"${expected}\"\n`;
+          prompt += `This is the output of my code: \"${output}\"\n`;
+        });
+      }
+
+      setCodeOutput(prompt);
+    }
   }
 
+  useEffect(() => {
+    console.log("auto updated", codeOutput);
+  }, [codeOutput]);
+
   return (
-    <div className="absolute bottom-0 col-span-7 col-start-6 flex w-full items-center justify-between bg-darkBlue px-6 py-3 font-bold text-nonWhite">
+    <div className="flex w-full items-center justify-between bg-darkBlue px-6 py-3 font-bold text-nonWhite">
       <div className="flex justify-start overflow-hidden">
         {showTags ? (
           <>
@@ -47,7 +74,7 @@ export default function Footer() {
         ) : (
           <button
             type="button"
-            className="items-centerr flex justify-center gap-3"
+            className="flex items-center justify-center gap-3"
             onClick={() => setShowTags(true)}
           >
             <Image
@@ -56,7 +83,7 @@ export default function Footer() {
               width={40}
               height={40}
             />{" "}
-            <h3 className="mt-2 font-titan">Problem Type</h3>
+            <h3 className="font-titan">Problem Type</h3>
           </button>
         )}
       </div>

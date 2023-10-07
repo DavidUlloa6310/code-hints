@@ -29,6 +29,7 @@ def test_solution(code: str, class_name: str, function_name: str, t_input: str):
     
     tester.__code__ = compiled_code
     tester()
+    
     return t_output
 
 

@@ -4,16 +4,11 @@ import Image from "next/image";
 import { useChat } from "@/hooks/useChat";
 import Draggable from "react-draggable";
 import SuggestionChips from "./SuggestionChips";
-import MermaidGraph from "./MermaidGraph";
+// import MermaidGraph from "./MermaidGraph";
+import GraphvizGraph from "./GraphvizGraph";
 import type { AgentMessage } from "@/schemas/chatSchemas";
-import { useEffect } from "react";
-import mermaid from "mermaid";
-// import mermaid from "mermaid";
 
 interface ChatBoxProps {
-  problemId: string;
-  userCode: string;
-  userCodeOutput: string;
   setIsVisible: (isVisible: boolean) => void;
 }
 
@@ -22,76 +17,62 @@ const ChatBubble = ({
   agent,
   format,
   isLoading,
-}: AgentMessage & { isLoading: boolean }) => (
-  <div className={`my-2 flex ${agent === "human" ? "justify-end" : ""}`}>
-    {isLoading ? (
-      <div className="flex h-32 max-w-[75%] items-center justify-center">
-        <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-gray-300"></div>
-      </div>
-    ) : (
-      <div
-        className={`"items-bottom flex gap-2 ${
-          agent === "human"
-        }?"flex-row-reverse":flex-row`}
-      >
-        <Image
-          src={`/images/${agent === "human" ? "person_icon" : "ai_icon"}.svg`}
-          width={40}
-          height={40}
-          alt="Icon"
-        />
-        <div
-          className={`rounded-md border-2 p-3 shadow-md ${
-            agent === "human"
-              ? "border-yellow-500 bg-blue-500 text-white"
-              : "border-gray-400 bg-gray-300 text-black shadow-md"
-          }`}
-        >
-          {format === "mermaid" ? (
-            <p>Mermaid</p>
-          ) : (
-            // <MermaidGraph graph={content} />
-            <span>{content}</span>
-          )}
+}: AgentMessage & { isLoading: boolean }) => {
+  //really shouldnt be needed
+
+  return (
+    <div className={`my-2 flex ${agent === "human" ? "justify-end" : ""}`}>
+      {isLoading ? (
+        <div className="flex h-32 max-w-[75%] items-center justify-center">
+          <div className="h-12 w-12 max-w-[100%] animate-spin rounded-full border-b-2 border-gray-200  "></div>
         </div>
-      </div>
-    )}
-  </div>
-);
+      ) : (
+        <div
+          className={`flex max-w-[100%] items-end gap-2 ${
+            agent === "human"
+          }?"flex-row-reverse":flex-row`}
+        >
+          <Image
+            src={`/images/${agent === "human" ? "person_icon" : "ai_icon"}.svg`}
+            width={40}
+            height={40}
+            alt="Icon"
+          />
+          <div
+            className={`rounded-md border-2 p-3 shadow-md ${
+              agent !== "human"
+                ? "max-w-[75%] border-[#5F5858] bg-black text-white"
+                : "min-w-[25%] border-[#FEC800] bg-[#8BA8B5] text-black shadow-md"
+            }`}
+          >
+            {format === "graphviz" ? (
+              <GraphvizGraph content={content} />
+            ) : (
+              <span>{content}</span>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
-export function ChatBox({
-  problemId,
-  userCode,
-  userCodeOutput,
-  setIsVisible,
-}: ChatBoxProps) {
-  const [graph, setGraph] = useState<string>(`
-  graph TD
-A["Input: nums = [2,7,11,15], target = 9"] --> B["Check nums[0] + nums[1] == target"]
-B -->|Yes| C["Output: [0,1]"]
-B -->|No| D{Check next pair}
-D --> B
-  `);
+export function ChatBox({ setIsVisible }: ChatBoxProps) {
+  //   const [graph, setGraph] = useState<string>(`
+  //   graph TD
+  // A["Input: nums = [2,7,11,15], target = 9"] --> B["Check nums[0] + nums[1] == target"]
+  // B -->|Yes| C["Output: [0,1]"]
+  // B -->|No| D{Check next pair}
+  // D --> B
+  //   `);
 
-  const { chat, sendChat, isLoading } = useChat({
-    problemId,
-    userCode,
-    userCodeOutput,
-  });
+  const { chat, sendChat, isLoading } = useChat();
   const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    mermaid.initialize({ startOnLoad: true });
-
-    mermaid.setParseErrorHandler((err, hash) => {
-      console.log(err);
-      console.log(hash);
-    });
-  }, []);
-
-  const handleSend = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSend = async (e?: React.FormEvent<HTMLFormElement | null>) => {
+    e?.preventDefault();
     const msg = message.trim();
+    console.log(message);
     setMessage("");
     await sendChat(msg);
   };
@@ -103,11 +84,11 @@ D --> B
           <div className="flex">
             <div
               onClick={() => setIsVisible(false)}
-              className="m-1 h-4 w-4 rounded-full bg-rose-700 active:bg-rose-900"
+              className="m-1 h-4 w-4 rounded-full bg-red active:bg-rose-900"
             ></div>
             <div
               onClick={() => setIsVisible(false)}
-              className="m-1 h-4 w-4 rounded-full bg-yellow-400 active:bg-yellow-600"
+              className="m-1 h-4 w-4 rounded-full bg-yellowAlert active:bg-yellow-600"
             ></div>
           </div>
 
@@ -139,9 +120,9 @@ D --> B
             />
           )}
 
-          {typeof window !== undefined && graph && (
+          {/* {typeof window !== undefined && graph && (
             <MermaidGraph graph={graph as string} />
-          )}
+          )} */}
 
           {isLoading && (
             <div className="flex justify-center">
@@ -151,11 +132,12 @@ D --> B
         </div>
 
         <div className="flex flex-col place-items-end">
-          <SuggestionChips />
+          <SuggestionChips sendChat={sendChat} />
           <form onSubmit={handleSend} className="relative flex w-full flex-row">
             <input
               type="text"
               className="txt-black flex-grow overflow-x-scroll rounded-xl bg-slate-200 p-2"
+              value={message}
               onChange={(e) => {
                 setMessage(e.target.value);
               }}
