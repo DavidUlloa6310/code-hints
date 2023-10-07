@@ -13,17 +13,17 @@ export const problemValidation = z.object({
       slug: z.string().min(1),
     }),
   ),
-  solution: z.array(
-    z.object({
-      explanation: z.string().min(1),
-      implementations: z.array(
+  solution: z.object({
+    explanation: z.string().min(1),
+    implementations: z.array(
+      z.array(
         z.object({
           code: z.string().min(1),
           langSlug: z.string().min(1),
         }),
       ),
-    }),
-  ),
+    ),
+  }),
   content: z.string().min(1),
   testCases: z.array(z.string().min(1)).min(1),
   starterCodes: z.array(

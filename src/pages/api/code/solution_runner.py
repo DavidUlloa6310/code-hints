@@ -14,13 +14,13 @@ def get_optimal_code(implementations) -> str:
 
 def test_solution(code: str, class_name: str, function_name: str, t_input: str):
     t_input = t_input.replace('\n', ', ')
-    # t_output = str()
 
     formatted_code = "from typing import *\n"
     formatted_code += f"{code}\n" 
     formatted_code += f"sol = {class_name}()\n"
     formatted_code += f"result = sol.{function_name}({t_input})\n"
     formatted_code += f"t_output = {class_name}().{function_name}({t_input})\n"
+    formatted_code += f"del Solution\n"
 
     compiled_code = compile(formatted_code, "", "exec")
 
@@ -29,7 +29,6 @@ def test_solution(code: str, class_name: str, function_name: str, t_input: str):
     
     tester.__code__ = compiled_code
     tester()
-
     return t_output
 
 
@@ -42,9 +41,8 @@ if len(sys.argv) != 3:
     )
     sys.stderr.flush()
 
-output = []
 problem = json.loads(b64decode(sys.argv[1]))
-user_code = sys.argv[2]
+user_code = b64decode(sys.argv[2]).decode('utf-8')
 
 # get the optimal solution and test cases for the problem
 optimal_code = get_optimal_code(problem['solution']['implementations'])
@@ -57,13 +55,13 @@ function_name = optimal_code.split("\n")[1].strip()
 class_name = re.search(r"class (.*?):", class_name).group(1)
 function_name = re.search(r"def (.*?)\(", function_name).group(1)
 
-
 output = []
 
 for t_case in test_cases:
     output.append({
         'testCase': t_case.replace("\n", ', '),
-        "expectedOutput": test_solution(optimal_code, class_name, function_name, t_case)
+        "expected": test_solution(optimal_code, class_name, function_name, t_case),
+        "output": test_solution(user_code, class_name, function_name, t_case)
     })
 
 

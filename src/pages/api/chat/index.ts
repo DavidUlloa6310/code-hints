@@ -19,7 +19,7 @@ export default async function handler(
         res.status(400).json({ error: error.errors });
       }
 
-      res.status(500).json({ error });
+      res.status(500).json(error);
     }
   }
 }

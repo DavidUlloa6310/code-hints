@@ -15,9 +15,11 @@ export const getLeetcodeProblemFromId = (problemId: string) => {
     json = JSON.parse(data);
   }
 
-  const problem: ProblemSchema | undefined = json.filter(
-    (problem: ProblemSchema) => problem.frontendQuestionId == problemId,
-  )[0];
+  // console.log("problem id is...", problemId);
+
+  const problem: ProblemSchema | undefined = json.find(
+    (problem: ProblemSchema) => problem.frontendQuestionId === problemId,
+  );
 
   if (problem == undefined) {
     throw new Error(`Problem ${problemId} not found`);

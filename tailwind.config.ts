@@ -19,6 +19,16 @@ export default {
         nonWhite: "#DEDEDE",
         lightBlue: "#8BA8B5",
         darkGrayText: "#ADACA7",
+        grayBlue: "#333D44",
+      },
+      keyframes: {
+        wiggle: {
+          "0%, 100%": { transform: "rotate(-3deg)" },
+          "50%": { transform: "rotate(3deg)" },
+        },
+      },
+      animation: {
+        wiggle: "wiggle 1s ease-in-out infinite",
       },
     },
   },

@@ -29,10 +29,15 @@ export default async function handler(
   }
 
   // if the request did not include the problemId, language or code
-  if (!(problemId && language && userCode)) {
-    return res.status(400).end();
-    // if the language from the request is not supported
-  } else if (!supportedLanguages.includes(language.toLowerCase())) {
+  const requiredParams = [problemId, language, userCode];
+  for (const param of requiredParams) {
+    if (param === null || param === undefined) {
+      return res.status(400).end();
+    }
+  }
+
+  // if the language from the request is not supported
+  if (!supportedLanguages.includes(language.toLowerCase())) {
     return res
       .status(400)
       .send(
@@ -50,16 +55,20 @@ export default async function handler(
   );
 
   const problem = JSON.stringify(await problemReq.json());
+  let solutionRunner: Buffer;
 
-  // execute the python file that checks the user solution
-  const solutionRunner = execSync(
-    `python3 ${SOLUTION_RUNNER_SCRIPT} ${btoa(problem)} ${userCode}`,
-  );
-
+  try {
+    // execute the python file that checks the user solution
+    solutionRunner = execSync(
+      `python3 ${SOLUTION_RUNNER_SCRIPT} ${btoa(problem)} ${btoa(userCode)}`,
+    );
+  } catch (e) {
+    /* eslint-disable @typescript-eslint/no-unsafe-call */
+    const message = e.toString("utf8") as string;
+    return res.status(200).json({ error: message });
+  }
   // capture the output from the solutions script
-  const solutionRunnerOutput = JSON.parse(
-    solutionRunner.toString("utf8"),
-  ) as Record<string, string>;
+  const solution = JSON.parse(solutionRunner.toString("utf8")) as unknown;
 
-  return res.status(200).json({ problemId, language, ...solutionRunnerOutput });
+  return res.status(200).json({ solution });
 }

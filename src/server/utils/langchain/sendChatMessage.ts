@@ -11,39 +11,39 @@ import {
 } from "langchain/output_parsers";
 import z from "zod";
 
-const _DEFAULT_TEMPLATE = `Your job is to help users solve leetcode questions. Below is the conversation between you and a user. Please help the user understand the problem and solve it. You are a chat bot, so try to limit your messages to 100 characters for explinations, more for diagrams. VERY IMPORTANT: Make sure your answer is formatted like this: {format_instructions}
- Current conversation:
- {chat_history}
+const _DEFAULT_TEMPLATE = `Your job is to help users solve leetcode questions. You are a chat bot, so limit your messages to 100 characters for explinations, more for mermaid diagrams. VERY IMPORTANT: Make sure your answer is formatted exactly like this: {format_instructions}. Only output your response inside the JSON, no other text.
 Problem description:
-{leetcode_problem_description}
+{leetcode_problem_description}\n
 Users' code:
-{user_code}
+{user_code}\n
 Users' code output:
-{user_code_output}
- User chat message: {input}
-`;
+{user_code_output}\n
+ Chat history:
+ {chat_history}\n
+ User's input:
+  {input}\n
+ Make sure you answer in the format specified at the beginning!`;
 
 // define the output schema
 const outputParser = StructuredOutputParser.fromZodSchema(
   z
     .object({
       format: z
-        .enum(["explination", "mermaid"])
+        .enum(["text", "mermaid"])
         .describe(
-          "the format of the output. do not mix the two types. if you are going to give mermaid, make sure the type is mermaid and not 'explination'",
+          "the format of the output. do not mix the two types. if you are going to give mermaid, make sure the type is 'mermaid' and not 'text'",
         ),
       content: z.string().describe(
-        `the content of the output. If mermaid, make sure all the nodes are wrapped in quotes. for example:flowchart LR
-          markdown["\`This **is** _Markdown_\`"]
-          newLines["\`Line1
-          Line 2
-          Line 3\`"]
-          markdown --> newLines.`,
+        `the content of the output. If mermaid, make sure the format is correct and be careful of escaping characters, if using brackets inside the nodes, make sure they're wrapped in quotes (eg. A[Input: nums = [2,7,11,15]] won't run, must be A["Input: nums = [2,7,11,15]"]).
+        Here's an example of proper syntax:
+        graph LR
+        A["Input: nums = [2,7,11,15], target = 9"] --> B["Check nums[0] + nums[1] == target"]
+        B -->|Yes| C["Output: [0,1]"]
+        B -->|No| D{Check next pair}
+        D --> BB`,
       ),
     })
-    .describe(
-      "if giving a visual, make sure the format is mermaid, and include only the mermaid code. if giving text, make sure the format is 'explination', and include only the text. do not mix the two types",
-    ),
+    .describe(""),
 );
 
 // initialize the ConversationChain context
@@ -74,39 +74,36 @@ export const sendChatMessage = async (data: ChatSchema) => {
       data.problemId,
     );
 
-    console.log("Message history: \n\n", data.messageHistory);
-    throw new Error("test");
-    return;
-
     // initialize the BufferMemory context, convert the chat history to the correct format
-    // const bufferMemory = new BufferMemory({
-    //   memoryKey: "chat_history",
-    //   inputKey: "input",
-    //   returnMessages: true, //not sure exacrly what this does?
-    //   chatHistory: new ChatMessageHistory(
-    //     convertChatHistory(data.messageHistory ?? []),
-    //   ),
-    // });
+    const bufferMemory = new BufferMemory({
+      memoryKey: "chat_history",
+      inputKey: "input",
+      // returnMessages: true, //not sure exacrly what this does?
+      chatHistory:
+        data.messageHistory &&
+        new ChatMessageHistory(convertChatHistory(data.messageHistory)),
+    });
 
-    // // create the ConversationChain context
-    // const chain = new LLMChain({
-    //   llm: model,
-    //   memory: bufferMemory,
-    //   prompt: PROMPT,
-    //   outputKey: "records",
-    //   verbose: true,
-    // });
+    // create the ConversationChain context
+    const chain = new LLMChain({
+      llm: model,
+      memory: bufferMemory,
+      prompt: PROMPT,
+      outputKey: "record",
+      verbose: true,
+    });
 
-    // const { records: output } = await chain.call({
-    //   input: data.currentMessage,
-    //   user_code: data.userCode,
-    //   user_code_output: data.userCodeOutput,
-    //   leetcode_problem_description: problemDescription,
-    //   outputParser: outputFixingParser,
-    // });
+    const { record: output } = await chain.call({
+      input: data.currentMessage,
+      user_code: data.userCode,
+      user_code_output: data.userCodeOutput,
+      leetcode_problem_description: problemDescription,
+      outputParser: outputFixingParser,
+    });
 
-    // return JSON.parse(output as string) as unknown;
+    return JSON.parse(output as string) as unknown;
   } catch (e) {
+    console.log(e);
     throw e;
   }
 };
