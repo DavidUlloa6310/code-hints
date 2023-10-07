@@ -6,11 +6,28 @@
   margin-left: 4px;
 }
 
-.description_container > *,
+/* .description_container > *,
 .description_container pre,
 pre {
   display: flex;
   flex-wrap: unset;
   word-break: break-all;
   width: 100%;
+} */
+
+.scraped-description {
+}
+
+.scraped-description p {
+  text-wrap: wrap;
+  width: 30rem;
+}
+
+.scraped-description .example {
+  font-family: Titan One;
+}
+
+.scraped-description pre {
+  text-wrap: wrap;
+  width: 30rem;
 }

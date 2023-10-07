@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import mermaid from "mermaid";
+// import "mermaid/dist/mermaid.css";
 
 interface MermaidGraphProps {
   graph: string;
@@ -7,14 +8,14 @@ interface MermaidGraphProps {
 
 export default function MermaidGraph({ graph }: MermaidGraphProps) {
   useEffect(() => {
+    // if (typeof window !== "undefined") {
     mermaid.initialize({ startOnLoad: true });
-
     mermaid.setParseErrorHandler((err, hash) => {
       console.log(err);
       console.log(hash);
     });
+    // }
   }, []);
-
   //   const graph = `
   //     graph TD
   //     Start --> Check_Sign
@@ -33,8 +34,8 @@ export default function MermaidGraph({ graph }: MermaidGraphProps) {
   //     `;
 
   return (
-    <main className="">
+    <div>
       <pre className="mermaid">{graph}</pre>
-    </main>
+    </div>
   );
 }

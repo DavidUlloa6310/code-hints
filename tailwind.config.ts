@@ -20,6 +20,7 @@ export default {
         lightBlue: "#8BA8B5",
         darkGrayText: "#ADACA7",
         grayBlue: "#333D44",
+        suggColors: "#8BA8B5",
       },
       keyframes: {
         wiggle: {

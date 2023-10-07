@@ -8,11 +8,16 @@ import ScrapedDescription from "./ScrapedDescription";
 import { GoDotFill } from "react-icons/go";
 import { useRouter } from "next/router";
 
-function DifficultyLabel({ difficulty }: { difficulty: string }) {
+interface DifficultyLabel {
+  difficulty: string;
+  color: string;
+}
+
+function DifficultyLabel({ difficulty, color }: DifficultyLabel) {
   return (
-    <div className="flex flex-row items-center justify-center rounded-lg px-2 py-1 shadow-lg">
-      <GoDotFill fill="#DE2A2A" />
-      <p className="font-roboto text-lg text-red">{difficulty}</p>
+    <div className="flex flex-row items-center justify-center rounded-lg bg-darkBlue px-2 py-1 shadow-lg drop-shadow-lg">
+      <GoDotFill className={color} />
+      <p className={`pl-2 font-roboto ${color}`}>{difficulty}</p>
     </div>
   );
 }
@@ -21,6 +26,12 @@ function ProblemDescription() {
   const { problemData, setProblemData } = useProblemDataContext()!;
   const router = useRouter();
   const { problemId } = router.query;
+
+  const difficultyColor: Record<string, string> = {
+    Easy: "text-lightGreen",
+    Medium: "text-yellowAlert",
+    Hard: "text-red",
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -45,14 +56,19 @@ function ProblemDescription() {
   }, [problemId]);
 
   return (
-    <section className="col-span-5 flex min-h-screen flex-col items-center justify-center bg-babyBlue">
+    <section className="col-span-5 flex flex-col items-center justify-center bg-babyBlue">
       <LogoHeader />
-      <article className="h-full w-[90%] rounded-md bg-white p-5">
+      <article className="h-[85vh] w-[90%] overflow-y-scroll rounded-md bg-white bg-opacity-80 p-5">
         <div className="flex w-full flex-row items-center justify-between">
-          <h3 className=" font-titan">{`Question #${problemData?.frontendQuestionId}`}</h3>
-          <DifficultyLabel difficulty={problemData?.difficulty as string} />
+          <h3 className=" font-titan">{`Question #${(
+            Number(problemData?.frontendQuestionId) + 1
+          )?.toString()}`}</h3>
+          <DifficultyLabel
+            difficulty={problemData?.difficulty as string}
+            color={difficultyColor[problemData?.difficulty!] ?? ""}
+          />
         </div>
-        <h2 className=" font-roboto text-3xl">{problemData?.title}</h2>
+        <h2 className=" mt-4 font-roboto text-3xl">{problemData?.title}</h2>
         <div className=" my-3 h-1 w-full rounded bg-gray-300" />
         <ScrapedDescription content={problemData?.content} />
       </article>

@@ -11,7 +11,7 @@ import {
 } from "langchain/output_parsers";
 import z from "zod";
 
-const _DEFAULT_TEMPLATE = `Your job is to help users solve leetcode questions. You are a chat bot, so limit your messages to 100 characters for explinations, more for mermaid diagrams. VERY IMPORTANT: Make sure your answer is formatted exactly like this: {format_instructions}. Only output your response inside the JSON, no other text.
+const _DEFAULT_TEMPLATE = `Your job is to help users solve leetcode questions. You are a chat bot, so limit your messages to 100 characters for explinations, more for mermaid diagrams. VERY IMPORTANT: Make sure your answer is formatted exactly like this: {format_instructions}. Only output your response as the format permits, no other text. Any incorrect output formats will get a bad grade.
 Problem description:
 {leetcode_problem_description}\n
 Users' code:
@@ -22,7 +22,7 @@ Users' code output:
  {chat_history}\n
  User's input:
   {input}\n
- Make sure you answer in the format specified at the beginning!`;
+ Make sure you answer in the format specified at the beginning! it should start with a leading '{', no text before it, and end with a trailing '}'`;
 
 // define the output schema
 const outputParser = StructuredOutputParser.fromZodSchema(
@@ -36,14 +36,14 @@ const outputParser = StructuredOutputParser.fromZodSchema(
       content: z.string().describe(
         `the content of the output. If mermaid, make sure the format is correct and be careful of escaping characters, if using brackets inside the nodes, make sure they're wrapped in quotes (eg. A[Input: nums = [2,7,11,15]] won't run, must be A["Input: nums = [2,7,11,15]"]).
         Here's an example of proper syntax:
-        graph LR
+        graph TD
         A["Input: nums = [2,7,11,15], target = 9"] --> B["Check nums[0] + nums[1] == target"]
         B -->|Yes| C["Output: [0,1]"]
         B -->|No| D{Check next pair}
         D --> BB`,
       ),
     })
-    .describe(""),
+    .describe("ONLY OUTPUT THIS FORMAT"),
 );
 
 // initialize the ConversationChain context

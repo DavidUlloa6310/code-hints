@@ -16,33 +16,27 @@ export const useChat = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const sendChat = async (message: string) => {
-    //The backend is expecting the previous chat messages and the current message to be separate
-    //I know this isn't great design, but I tried fixing it and the whole thing broke :)
-    const previousChat = chat;
-    const newMessage: AgentMessage = {
-      agent: "human",
-      format: "text",
-      content: message,
-    };
-
-    //DEV
-    console.log("sending message", message);
-    return;
-
-    //optimistically update the chat
-    setChat([...chat, newMessage]);
     setIsLoading(true);
 
-    // Submit the message + context to the backend, update with agent response
+    // Optimistically update the chat with the user's message
+    setChat((prevChat) => [
+      ...prevChat,
+      {
+        agent: "human",
+        format: "text",
+        content: message,
+      },
+    ]);
+
+    // Submit the message + context to the backend and update with agent response
     const apiResponse = await fetch("/api/chat", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        messsageHistory: previousChat,
-        //todo: investigate removing this
-        currentMessage: newMessage.content,
+        messageHistory: chat, // Use the current chat state
+        currentMessage: message,
         userCode: userCode,
         userCodeOutput: userCodeOutput,
         problemId: problemId,
@@ -57,13 +51,10 @@ export const useChat = ({
       content: res.content,
     };
 
-    setChat([...chat, botResponse]);
+    // Update the chat with the agent's response
+    setChat((prevChat) => [...prevChat, botResponse]);
     setIsLoading(false);
   };
 
-  return {
-    chat,
-    sendChat,
-    isLoading,
-  };
+  return { chat, sendChat, isLoading };
 };

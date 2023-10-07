@@ -4,7 +4,7 @@ import Image from "next/image";
 
 function LogoHeader() {
   return (
-    <div className="flex flex-row items-center justify-center gap-2">
+    <div className="justify-left my-3 flex w-full flex-row items-center gap-2 pl-8">
       <Image
         src="/images/logo.svg"
         height={100}

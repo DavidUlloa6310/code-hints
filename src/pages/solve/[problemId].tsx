@@ -1,26 +1,36 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { Editor } from "@monaco-editor/react";
-import { ProblemSchema } from "@/schemas/problemSchema";
-import { GoDotFill } from "react-icons/go";
-import LogoHeader from "@/components/LogoHeader";
-import ScrapedDescription from "@/components/ScrapedDescription";
-import { ChatBox } from "@/components/ChatBox";
 import ProblemDescription from "@/components/ProblemDescription";
 import ProblemDataProvider from "@/hooks/useProblemData";
 import TextEditor from "@/components/TextEditor";
+import { ChatBox } from "@/components/ChatBox";
+import { NavBar } from "@/components/NavBar";
+import Footer from "@/components/Footer";
+import { UserDataProvider } from "@/hooks/useUserData";
 
 function Solve() {
-  const [problemData, setProblemData] = useState<ProblemSchema | null>(null);
+  const [isChatVisible, setIsChatVisible] = useState<boolean>(true);
   const router = useRouter();
   const { problemId } = router.query;
 
   return (
     <ProblemDataProvider>
-      <main className="grid grid-cols-12">
-        <ProblemDescription />
-        <TextEditor />
-      </main>
+      <UserDataProvider>
+        {isChatVisible && (
+          <ChatBox
+            setIsVisible={setIsChatVisible}
+            problemId={problemId as string}
+            userCode=""
+            userCodeOutput=""
+          />
+        )}
+
+        <main className="relative grid grid-cols-12">
+          <ProblemDescription />
+          <TextEditor />
+          <Footer />
+        </main>
+      </UserDataProvider>
     </ProblemDataProvider>
   );
 }

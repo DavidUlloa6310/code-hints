@@ -1,6 +1,5 @@
 import React from "react";
 import { useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { HiOutlineArrowSmRight } from "react-icons/hi";
 
@@ -13,6 +12,7 @@ export function NavBar({
 }) {
   const [problemsMenuActive, setProblemsMenu] = useState(false);
   const [isChatActive, toggleChatActive] = useState(false);
+  const [isActive, setActive] = useState(false);
 
   const handleMenu = () => {
     setProblemsMenu(!problemsMenuActive);
@@ -24,7 +24,13 @@ export function NavBar({
   };
 
   return (
-    <div className="flex hidden h-11 w-4/5 items-center rounded-full bg-darkBlue shadow-md hover:block hover:translate-y-1">
+    <div
+      className={`flex h-11 w-4/5 items-center ${
+        isActive ? "fixed" : "hidden"
+      } shadow-md" rounded-full bg-darkBlue`}
+      onMouseEnter={() => setActive(true)}
+      onMouseLeave={() => setActive(false)}
+    >
       <div className="justify-right flex items-center">
         <div className="flex items-center">
           <button

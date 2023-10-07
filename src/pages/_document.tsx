@@ -15,6 +15,17 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Titan+One&display=swap"
             rel="stylesheet"
           />
+          <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.css"
+          />
+          {/* <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+          <script
+            // eslint-disable-next-line react/no-danger
+            dangerouslySetInnerHTML={{
+              __html: `mermaid.initialize({startOnLoad: true});`,
+            }}
+          /> */}
         </Head>
         <body>
           <Main />
