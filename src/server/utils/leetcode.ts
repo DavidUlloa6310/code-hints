@@ -10,11 +10,11 @@ let json: ProblemSchema[];
 
 export const getLeetcodeProblems = (): ProblemSchema[] => {
   const filePath = publicRuntimeConfig.problemSetPath;
-  const data: string = fs
-    .readFileSync(
-      `${process.env.PROBLEM_PATH ? process.env.PROBLEM_PATH : ""}${filePath}`,
-    )
-    .toString();
+  const fullPath = `${
+    process.env.NEXT_PUBLIC_IS_HOSTED === "true" ? "" : "public"
+  }${filePath}`;
+  console.log(fullPath);
+  const data: string = fs.readFileSync(fullPath).toString();
   if (json == null) {
     json = JSON.parse(data);
   }
@@ -23,9 +23,11 @@ export const getLeetcodeProblems = (): ProblemSchema[] => {
 
 export const getLeetcodeProblemFromId = (problemId: string) => {
   const filePath = publicRuntimeConfig.problemSetPath;
-  const data: string = fs
-    .readFileSync(`${process.env.PROBLEMS_PATH}${filePath}`)
-    .toString();
+  const fullPath = `${
+    process.env.NEXT_PUBLIC_IS_HOSTED === "true" ? "" : "public"
+  }${filePath}`;
+  console.log(fullPath);
+  const data: string = fs.readFileSync(fullPath).toString();
   if (json == null) {
     json = JSON.parse(data);
   }
