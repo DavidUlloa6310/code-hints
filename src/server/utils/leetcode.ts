@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/non-nullable-type-assertion-style */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -9,12 +10,14 @@ const { publicRuntimeConfig } = getConfig();
 let json: ProblemSchema[];
 
 export const getLeetcodeProblems = (): ProblemSchema[] => {
-  const filePath = publicRuntimeConfig.problemSetPath;
-  const fullPath = `${
-    process.env.NEXT_PUBLIC_IS_HOSTED === "true" ? "" : "public"
-  }${filePath}`;
-  console.log(fullPath);
-  const data: string = fs.readFileSync(fullPath).toString();
+  // const filePath = publicRuntimeConfig.problemSetPath;
+  // const fullPath = `${
+  //   process.env.NEXT_PUBLIC_IS_HOSTED === "true" ? "" : "public"
+  // }${filePath}`;
+  // console.log(fullPath);
+  const data: string = fs
+    .readFileSync(process.env.PROBLEM_PATH as string)
+    .toString();
   if (json == null) {
     json = JSON.parse(data);
   }
@@ -22,12 +25,14 @@ export const getLeetcodeProblems = (): ProblemSchema[] => {
 };
 
 export const getLeetcodeProblemFromId = (problemId: string) => {
-  const filePath = publicRuntimeConfig.problemSetPath;
-  const fullPath = `${
-    process.env.NEXT_PUBLIC_IS_HOSTED === "true" ? "" : "public"
-  }${filePath}`;
-  console.log(fullPath);
-  const data: string = fs.readFileSync(fullPath).toString();
+  // const filePath = publicRuntimeConfig.problemSetPath;
+  // const fullPath = `${
+  //   process.env.NEXT_PUBLIC_IS_HOSTED === "true" ? "" : "public"
+  // }${filePath}`;
+  // console.log(fullPath);
+  const data: string = fs
+    .readFileSync(process.env.PROBLEM_PATH as string)
+    .toString();
   if (json == null) {
     json = JSON.parse(data);
   }
