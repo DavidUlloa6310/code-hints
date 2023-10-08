@@ -11,7 +11,9 @@ let json: ProblemSchema[];
 export const getLeetcodeProblems = (): ProblemSchema[] => {
   const filePath = publicRuntimeConfig.problemSetPath;
   const data: string = fs
-    .readFileSync(`${process.env.PROBLEM_PATH}${filePath}`)
+    .readFileSync(
+      `${process.env.PROBLEM_PATH ? process.env.PROBLEM_PATH : ""}${filePath}`,
+    )
     .toString();
   if (json == null) {
     json = JSON.parse(data);
