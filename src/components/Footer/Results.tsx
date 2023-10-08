@@ -66,7 +66,10 @@ export default function Results({ showResults }: ResultsProps) {
           <div>
             {codeOutput.solution?.outputs.map(
               ({ testCase, output, passed }) => (
-                <div className="flex w-[32rem] items-center justify-between">
+                <div
+                  className="flex w-[32rem] items-center justify-between"
+                  key={testCase}
+                >
                   <OutputText passed>{testCase}</OutputText>
                   <HiArrowLongRight className="text-5xl" />
                   <OutputText passed>{output}</OutputText>
