@@ -1,28 +1,45 @@
-# Create T3 App
+# [CodeHints](code-hints.vercel.app) - Your AI Interview Buddy!
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+CodeHints is an AI chat-guided software that helps you with your technical interview practice problems on LeetCode!
 
-## What's next? How do I make an app with this?
+![image](https://github.com/DavidUlloa6310/code-hints/assets/91924667/4871190e-2f25-4197-bba8-1b17a56e24d5)
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+The project is designed to offer a comprehensive platform for mastering technical interviews, primarily focused on LeetCode questions, by providing a rich set of features including problem sets, real-time chat-based guidance, dynamic graphical problem visualization, and future enhancements such as performance analytics and statistical feedback on solutions.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Key Features
+- [X] Problem set with **over 300 LeetCode questions**;
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+- [X] A real-time and problem-specific **Chat Agent** designed exclusively to helping you solve your problem!
 
-## Learn More
+- [X] **Dynamic Graphical Visualization** to represent your problem. 
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+### Future Implementation:
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+- [ ] **Performance Analytics**: We hope to cater the project even more to our users by providing them data analysis of their progress and performance with chat history!
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+- [ ] **Statistical Feedback on your Solution**: Our AI will eventually rate your solutions based on optimal runtime and space complexities, and treat it as a metric to track your performance.
 
-## How do I deploy this?
+## Our TechStack
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+✨ Next.JS for full-stack deployment
+
+✨ LangChain for prompt-engineering and user-driven assistance
+
+✨ Python for code execution
+
+✨ React GraphViz for problem visualization 
+
+✨ TypeScript
+
+✨ JSON for storing the problems 
+
+
+## Downloading the Project Locally
+Clone the repository into your folder and `cd` into it. From there, run `npm install` and wait for your file components to build. Set your environment variables in a new `.env` file. These should be access keys to your OpenAI API and other auth-based components. Follow `.env-examples` for more.
+
+# The KnightHacks Hackathon!
+Our project was prompted by the [KnightHacks 2023](2023.knighthacks.org) Hackathon -- an epic adventure at Universal of Central Florida!
+
+Made with <3 by [David Ulloa](https://github.com/DavidUlloa6310), [Gabriel Lucchesi](https://github.com/ghubnerr), [Smyvens Estime](https://github.com/styled-man) and [Jacob Schuster](https://github.com/jacob8765)
+
+
