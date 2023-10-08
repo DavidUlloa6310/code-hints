@@ -31,6 +31,8 @@ The project is designed to offer a comprehensive platform for mastering technica
 
 ✨ TypeScript
 
+✨ Tailwind for styling
+
 ✨ JSON for storing the problems 
 
 
