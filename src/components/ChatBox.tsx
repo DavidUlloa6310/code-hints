@@ -22,41 +22,37 @@ const ChatBubble = ({
 
   return (
     <div className={`my-2 flex ${agent === "human" ? "justify-end" : ""}`}>
-      {isLoading ? (
-        <div className="relative flex h-[80vh] w-[90%] items-center justify-center overflow-y-scroll rounded-md bg-white bg-opacity-90 p-5 shadow-md">
-          <div className="flex items-center justify-center">
-            <div className="mx-1 h-4 w-4 animate-ping rounded-full bg-blue-500"></div>
-            <div className="mx-1 h-4 w-4 animate-ping rounded-full bg-blue-500"></div>
-            <div className="mx-1 h-4 w-4 animate-ping rounded-full bg-blue-500"></div>
-          </div>
-        </div>
-      ) : (
+      <div
+        className={`flex max-w-[100%] items-end gap-2 ${
+          agent === "human" ? "flex-row-reverse" : "flex-row"
+        }`}
+      >
+        <Image
+          src={`/images/${agent === "human" ? "person_icon" : "ai_icon"}.svg`}
+          width={40}
+          height={40}
+          alt="Icon"
+        />
         <div
-          className={`flex max-w-[100%] items-end gap-2 ${
-            agent === "human"
-          }?"flex-row-reverse":flex-row`}
+          className={`rounded-md border-2 p-3 shadow-md ${
+            agent !== "human"
+              ? "max-w-[75%] border-[#5F5858] bg-black text-white"
+              : "min-w-[25%] border-[#FEC800] bg-[#8BA8B5] text-black shadow-md"
+          }`}
         >
-          <Image
-            src={`/images/${agent === "human" ? "person_icon" : "ai_icon"}.svg`}
-            width={40}
-            height={40}
-            alt="Icon"
-          />
-          <div
-            className={`rounded-md border-2 p-3 shadow-md ${
-              agent !== "human"
-                ? "max-w-[75%] border-[#5F5858] bg-black text-white"
-                : "min-w-[25%] border-[#FEC800] bg-[#8BA8B5] text-black shadow-md"
-            }`}
-          >
-            {format === "graphviz" ? (
-              <GraphvizGraph content={content} />
-            ) : (
-              <span>{content}</span>
-            )}
-          </div>
+          {format === "graphviz" ? (
+            <GraphvizGraph content={content} />
+          ) : isLoading ? (
+            <div className="justify-content-center flex items-center gap-3 px-3">
+              <div className="animate-delay-100 h-4 w-4 animate-bounce rounded-full bg-blue-500"></div>
+              <div className="animate-delay-200 h-4 w-4 animate-bounce rounded-full bg-blue-500"></div>
+              <div className="animate-delay-300 h-4 w-4 animate-bounce rounded-full bg-blue-500"></div>
+            </div>
+          ) : (
+            <span>{content}</span>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
@@ -89,7 +85,7 @@ export function ChatBox({ setIsVisible }: ChatBoxProps) {
         y: 435,
       }}
     >
-      <div className="absolute z-20 flex max-h-[700px] min-h-[350px] min-w-[500px] max-w-[600px] flex-col rounded-md border-2 border-white bg-darkBlue p-4 shadow-lg">
+      <div className="absolute z-20 flex max-h-[700px] min-h-[350px] min-w-[500px] max-w-[600px] flex-col rounded-md border-2 border-nonWhite bg-darkBlue p-4 shadow-lg">
         <div className="handle m-0 flex flex-row-reverse justify-between">
           <div className="flex">
             <div
@@ -128,16 +124,6 @@ export function ChatBox({ setIsVisible }: ChatBoxProps) {
               format="text"
               isLoading={true}
             />
-          )}
-
-          {/* {typeof window !== undefined && graph && (
-            <MermaidGraph graph={graph as string} />
-          )} */}
-
-          {isLoading && (
-            <div className="flex justify-center">
-              <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-gray-900"></div>
-            </div>
           )}
         </div>
 

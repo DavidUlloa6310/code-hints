@@ -42,6 +42,7 @@ const _DEFAULT_TEMPLATE = `
 ## Correct Solution
   * Here's the correct solution for the problem for which you should base your graphiz diagrams:
   {correct_solution}
+  *Remember to adhere to the formatting! Your response should begin and end with curly braces, and only contain the format instructions.
 <!endofprompt!>`;
 
 // define the output schema

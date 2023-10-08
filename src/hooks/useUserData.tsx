@@ -1,11 +1,15 @@
 import React, { type ReactNode, useContext, useState } from "react";
 
 interface SubmitResponse {
-  solution?: Array<{
-    testCase: string;
-    expected: string;
-    output: string;
-  }>;
+  solution?: {
+    outputs: Array<{
+      testCase: string;
+      expected: string;
+      output: string;
+      passedAllCases: boolean;
+    }>;
+    passedAllCases: true;
+  };
   error?: string;
 }
 

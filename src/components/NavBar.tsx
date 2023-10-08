@@ -21,11 +21,13 @@ export function NavBar({
   };
 
   const handleChatToggle = () => {
-    setChatVisible((isChatVisible: any) => !isChatVisible);
+    setChatVisible(
+      ((isChatVisible: boolean) => !isChatVisible) as unknown as boolean,
+    );
   };
 
   const handleVisualization = () => {
-    setVisualization(!isVisualizationActive);
+    setVisualization((isVisualizationActive) => !isVisualizationActive);
   };
 
   const content = (

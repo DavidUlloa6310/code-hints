@@ -59,15 +59,24 @@ function_name = optimal_code.split("\n")[1].strip()
 class_name = re.search(r"class (.*?):", class_name).group(1)
 function_name = re.search(r"def (.*?)\(", function_name).group(1)
 
-output = []
+solution = {
+    'outputs': [],
+    'passedAllCases': True
+}
 
 for t_case in test_cases:
-    output.append({
+    optimal_solution = test_solution(optimal_code, class_name, function_name, t_case)
+    user_solution = test_solution(user_code, class_name, function_name, t_case)
+
+    if optimal_solution != user_solution:
+        solution['passedAllCases'] = False
+
+    solution['outputs'].append({
         'testCase': t_case.replace("\n", ', '),
-        "expected": test_solution(optimal_code, class_name, function_name, t_case),
-        "output": test_solution(user_code, class_name, function_name, t_case)
+        "expected": optimal_solution,
+        "output": user_solution
     })
 
 
-print(json.dumps(output))
+print(json.dumps(solution))
 sys.stdout.flush()
