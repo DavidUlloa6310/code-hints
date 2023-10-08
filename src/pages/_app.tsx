@@ -3,6 +3,7 @@ import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 import { useEffect } from "react";
 import mermaid from "mermaid";
+import "@/styles/graphviz.css";
 
 import "@/styles/globals.css";
 

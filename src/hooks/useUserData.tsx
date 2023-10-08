@@ -6,7 +6,7 @@ interface SubmitResponse {
       testCase: string;
       expected: string;
       output: string;
-      passedAllCases: boolean;
+      passed: boolean
     }>;
     passedAllCases: true;
   };

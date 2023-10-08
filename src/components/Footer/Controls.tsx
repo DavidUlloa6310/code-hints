@@ -17,8 +17,10 @@ export default function Controls({
   const [showTags, setShowTags] = useState(false);
   const { problemData } = useProblemDataContext()!;
   const { userCode, codeOutput, setCodeOutput } = useUserDataContext();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function submitCode() {
+    setIsSubmitting(true);
     const request = await fetch("/api/code/submit", {
       method: "POST",
       body: JSON.stringify({
@@ -32,11 +34,10 @@ export default function Controls({
       const response = (await request.json()) as typeof codeOutput;
       setCodeOutput(response);
     }
-  }
 
-  useEffect(() => {
-    console.log("auto updated", codeOutput);
-  }, [codeOutput]);
+    setIsSubmitting(false);
+    setShowResults(true);
+  }
 
   return (
     <div className="flex w-full items-center justify-between">
@@ -84,8 +85,9 @@ export default function Controls({
           className="act whitespace-nowrap rounded-xl border-4 border-yellowAlert px-8 py-2 font-titan text-yellowAlert active:border-yellow-500 active:text-yellow-500"
           type="button"
           onClick={submitCode}
+          disabled={isSubmitting}
         >
-          Submit
+          {isSubmitting ? "Loading..." : "Submit"}
         </button>
         <button
           className="z-10 w-full"
@@ -97,11 +99,11 @@ export default function Controls({
           <Image
             src="/images/yellow_arrow.svg"
             alt="Show/Hide results"
-            width={20}
+            width={18}
             className={`mr-4 ${
               showResults ? "rotate-180" : ""
-            } transition-all duration-300 ease-in-out`}
-            height={20}
+            } transition-all duration-1000 ease-in-out`}
+            height={18}
           />
         </button>
       </div>

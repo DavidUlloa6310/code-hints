@@ -40,7 +40,7 @@ export const useChat = () => {
         messageHistory: chat, // Use the current chat state
         currentMessage: message,
         userCode: userCode,
-        userCodeOutput: codeOutput ?? "",
+        userCodeOutput: codeOutput?.error ?? "",
         problemId: problemData!.frontendQuestionId,
       }),
     });

@@ -36,6 +36,8 @@ const _DEFAULT_TEMPLATE = `
 ## User's Code Output
   * {user_code_output}
   * {chat_history}
+## User's Code
+  * {user_code}
 ## User Input
   * {input}
   * Make sure you answer in the format specified at the beginning! Start with opening curly brace, and end with a closing one. No leading / trailing character!

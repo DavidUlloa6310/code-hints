@@ -3,78 +3,21 @@ import { useState } from "react";
 import Image from "next/image";
 import { useChat } from "@/hooks/useChat";
 import Draggable from "react-draggable";
-import SuggestionChips from "./SuggestionChips";
-// import MermaidGraph from "./MermaidGraph";
-import GraphvizGraph from "./GraphvizGraph";
+import SuggestionChips from "../SuggestionChips";
 import type { AgentMessage } from "@/schemas/chatSchemas";
+import { ChatBubble } from "./ChatBubble";
 
 interface ChatBoxProps {
   setIsVisible: (isVisible: boolean) => void;
 }
 
-const ChatBubble = ({
-  content,
-  agent,
-  format,
-  isLoading,
-}: AgentMessage & { isLoading: boolean }) => {
-  //really shouldnt be needed
-
-  return (
-    <div
-      className={`z-[100] my-2 flex ${agent === "human" ? "justify-end" : ""}`}
-    >
-      <div
-        className={`flex max-w-[100%] items-end gap-2 ${
-          agent === "human" ? "flex-row-reverse" : "flex-row"
-        }`}
-      >
-        <Image
-          src={`/images/${agent === "human" ? "person_icon" : "ai_icon"}.svg`}
-          width={40}
-          height={40}
-          alt="Icon"
-        />
-        <div
-          className={`overflow-scroll rounded-md border-2 p-3 shadow-md ${
-            agent !== "human"
-              ? "max-w-[75%] border-[#5F5858] bg-black text-white"
-              : "min-w-[25%] border-[#FEC800] bg-[#8BA8B5] text-black shadow-md"
-          }`}
-        >
-          {format === "graphviz" ? (
-            <GraphvizGraph content={content} />
-          ) : isLoading ? (
-            <div className="justify-content-center left-0 flex items-center gap-3 px-3">
-              <div className="animate-delay-100 h-2 w-2 animate-bounce rounded-full bg-yellowAlert"></div>
-              <div className="animate-delay-200 h-2 w-2 animate-bounce rounded-full bg-yellowAlert"></div>
-              <div className="animate-delay-300 h-2 w-2 animate-bounce rounded-full bg-yellowAlert"></div>
-            </div>
-          ) : (
-            <span>{content}</span>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
-
 export function ChatBox({ setIsVisible }: ChatBoxProps) {
-  //   const [graph, setGraph] = useState<string>(`
-  //   graph TD
-  // A["Input: nums = [2,7,11,15], target = 9"] --> B["Check nums[0] + nums[1] == target"]
-  // B -->|Yes| C["Output: [0,1]"]
-  // B -->|No| D{Check next pair}
-  // D --> B
-  //   `);
-
   const { chat, sendChat, isLoading } = useChat();
   const [message, setMessage] = useState("");
 
   const handleSend = async (e?: React.FormEvent<HTMLFormElement | null>) => {
     e?.preventDefault();
     const msg = message.trim();
-    console.log(message);
     setMessage("");
     await sendChat(msg);
   };
@@ -87,9 +30,9 @@ export function ChatBox({ setIsVisible }: ChatBoxProps) {
         y: 435,
       }}
     >
-      <div className="absolute z-20 flex max-h-[700px] min-h-[350px] min-w-[500px] max-w-[600px] flex-col rounded-md border-2 border-nonWhite bg-darkBlue p-4 shadow-lg">
-        <div className="handle m-0 flex flex-row-reverse justify-between">
-          <div className="flex">
+      <div className="absolute z-20 flex max-h-[700px] min-h-[350px] min-w-[500px] max-w-[600px] flex-col rounded-md border-2 border-nonWhite bg-darkBlue px-4 py-0 shadow-lg">
+        <div className="handle flex flex-row items-center justify-between">
+          <div className="flex items-center">
             <div
               onClick={() => setIsVisible(false)}
               className="m-1 h-4 w-4 rounded-full bg-red active:bg-rose-900"
@@ -100,7 +43,7 @@ export function ChatBox({ setIsVisible }: ChatBoxProps) {
             ></div>
           </div>
 
-          <div className="justify-left mb-1 flex items-center gap-2">
+          <div className="justify-left flex items-center">
             <h1 className="font-titan text-2xl text-lightGreen">Chat</h1>
             <Image
               src="/images/chat.svg"

@@ -32,7 +32,7 @@ export function NavBar({
 
   const content = (
     <div
-      className={`absolute right-[12.25%] top-3 z-[20] flex w-[75%] flex-col justify-center rounded-lg bg-darkBlue px-4 ${
+      className={`absolute right-[12.25%] top-3 z-[5] flex w-[75%] flex-col justify-center rounded-lg bg-darkBlue px-4 ${
         isActive ? "fixed" : "fixed opacity-0"
       }`}
       onMouseEnter={() => setActive(true)}

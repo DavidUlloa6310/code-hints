@@ -59,6 +59,7 @@ function TextEditor({
       <div className="h-[11*1rem] flex-grow overflow-auto">
         <Editor
           onChange={(value, event) => {
+            console.log("User code", value);
             setUserCode(value ?? "");
           }}
           value={userCode}

@@ -62,7 +62,7 @@ function ProblemMenu(): JSX.Element {
                 : "border-lightGreen"
             }  m-2 cursor-pointer rounded-md p-1 px-2 font-roboto font-bold text-nonWhite underline hover:text-white`}
           >
-            {`${problem.frontendQuestionId + 1} ${problem.title}`}
+            {`#${(Number(problem.frontendQuestionId) + 1).toString()} - ${problem.title}`}
           </li>
         </Link>
       ))}

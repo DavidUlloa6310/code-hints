@@ -1,0 +1,14 @@
+/* graphviz-graph.css */
+
+/* Customize the appearance of nodes */
+.node {
+    fill: #FEC800; /* Change the fill color */
+    stroke: #5F5858; /* Change the border color */
+  }
+  
+  /* Customize the appearance of edges */
+  .edge {
+    stroke: #8BA8B5; /* Change the edge color */
+    stroke-width: 2; /* Adjust the edge thickness */
+  }
+  
