@@ -10,7 +10,9 @@ let json: ProblemSchema[];
 
 export const getLeetcodeProblems = (): ProblemSchema[] => {
   const filePath = publicRuntimeConfig.problemSetPath;
-  const data: string = fs.readFileSync(`public${filePath}`).toString();
+  const data: string = fs
+    .readFileSync(`${process.env.PROBLEM_PATH}${filePath}`)
+    .toString();
   if (json == null) {
     json = JSON.parse(data);
   }
@@ -19,7 +21,9 @@ export const getLeetcodeProblems = (): ProblemSchema[] => {
 
 export const getLeetcodeProblemFromId = (problemId: string) => {
   const filePath = publicRuntimeConfig.problemSetPath;
-  const data: string = fs.readFileSync(`public${filePath}`).toString();
+  const data: string = fs
+    .readFileSync(`${process.env.PROBLEM_PATH}${filePath}`)
+    .toString();
   if (json == null) {
     json = JSON.parse(data);
   }
