@@ -23,8 +23,12 @@ const ChatBubble = ({
   return (
     <div className={`my-2 flex ${agent === "human" ? "justify-end" : ""}`}>
       {isLoading ? (
-        <div className="flex h-32 max-w-[75%] items-center justify-center">
-          <div className="h-12 w-12 max-w-[100%] animate-spin rounded-full border-b-2 border-gray-200  "></div>
+        <div className="relative flex h-[80vh] w-[90%] items-center justify-center overflow-y-scroll rounded-md bg-white bg-opacity-90 p-5 shadow-md">
+          <div className="flex items-center justify-center">
+            <div className="mx-1 h-4 w-4 animate-ping rounded-full bg-blue-500"></div>
+            <div className="mx-1 h-4 w-4 animate-ping rounded-full bg-blue-500"></div>
+            <div className="mx-1 h-4 w-4 animate-ping rounded-full bg-blue-500"></div>
+          </div>
         </div>
       ) : (
         <div
@@ -78,8 +82,14 @@ export function ChatBox({ setIsVisible }: ChatBoxProps) {
   };
 
   return (
-    <Draggable handle=".handle" defaultPosition={{ x: 200, y: 50 }}>
-      <div className="absolute z-20 flex max-h-[700px] min-h-[350px] min-w-[500px] max-w-[600px] flex-col rounded-md bg-darkBlue p-4 shadow-lg">
+    <Draggable
+      handle=".handle"
+      defaultPosition={{
+        x: 20,
+        y: 435,
+      }}
+    >
+      <div className="absolute z-20 flex max-h-[700px] min-h-[350px] min-w-[500px] max-w-[600px] flex-col rounded-md border-2 border-white bg-darkBlue p-4 shadow-lg">
         <div className="handle m-0 flex flex-row-reverse justify-between">
           <div className="flex">
             <div
@@ -96,13 +106,13 @@ export function ChatBox({ setIsVisible }: ChatBoxProps) {
             <h1 className="font-titan text-2xl text-lightGreen">Chat</h1>
             <Image
               src="/images/chat.svg"
-              height={18}
-              width={18}
+              height={25}
+              width={25}
               alt="Chat Feature"
             ></Image>
           </div>
         </div>
-        <div className="h-1 w-full rounded-full bg-slate-200"></div>
+        <div className="h-1 w-full rounded-full bg-slate-500"></div>
 
         {/* Action buttons */}
 

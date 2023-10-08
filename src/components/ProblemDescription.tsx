@@ -53,7 +53,7 @@ function ProblemDescription() {
       }
     }
     void fetchData();
-  }, [problemId]);
+  }, [problemId, setProblemData]);
 
   return (
     <section className="col-span-5 flex h-screen flex-col items-center justify-center bg-babyBlue">
@@ -68,7 +68,9 @@ function ProblemDescription() {
             color={difficultyColor[problemData?.difficulty!] ?? ""}
           />
         </header>
-        <h2 className="mt-4 font-titan text-3xl">{problemData?.title}</h2>
+        <h2 className="mt-4 font-roboto text-2xl font-bold">
+          {problemData?.title}
+        </h2>
         <hr className="my-3 h-1 w-full rounded bg-gray-300" />
         <ScrapedDescription content={problemData?.content} />
       </article>

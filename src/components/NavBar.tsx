@@ -1,8 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { createPortal } from "react-dom";
-import Image from "next/image";
-import { HiOutlineArrowSmRight } from "react-icons/hi";
+import ProblemMenu from "./ProblemMenu";
 
 export function NavBar({
   className,
@@ -19,12 +17,11 @@ export function NavBar({
   const [isVisualizationActive, setVisualization] = useState(false);
 
   const handleMenu = () => {
-    setProblemsMenu(!problemsMenuActive);
+    setProblemsMenu((problemsMenuActive) => !problemsMenuActive);
   };
 
   const handleChatToggle = () => {
-    // toggleChatActive(!isChatActive);
-    setChatVisible(!isChatVisible);
+    setChatVisible((isChatVisible: any) => !isChatVisible);
   };
 
   const handleVisualization = () => {
@@ -33,11 +30,14 @@ export function NavBar({
 
   const content = (
     <div
-      className={`absolute right-[12.25%] top-3 z-[20] flex w-[75%] flex-col justify-center rounded-full bg-darkBlue px-4 ${
+      className={`absolute right-[12.25%] top-3 z-[20] flex w-[75%] flex-col justify-center rounded-lg bg-darkBlue px-4 ${
         isActive ? "fixed" : "fixed opacity-0"
       }`}
       onMouseEnter={() => setActive(true)}
-      onMouseLeave={() => setActive(false)}
+      onMouseLeave={() => {
+        setActive(false);
+        setProblemsMenu(false);
+      }}
       style={{
         transition: "opacity 0.3s ease-in-out, transform 0.3s ease-in-out",
         opacity: isActive ? 1 : 0,
@@ -67,6 +67,7 @@ export function NavBar({
           </button>
         </div>
       </div>
+      {problemsMenuActive && <ProblemMenu />}
     </div>
   );
 

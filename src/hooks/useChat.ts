@@ -7,7 +7,7 @@ const INITIAL_CHAT: AgentMessage[] = [
   {
     agent: "bot",
     format: "text",
-    content: "Hello, I'm the bot! How can I help you?",
+    content: "Hello, I'm the CodeHints bot! How can I help you today?",
   },
 ];
 

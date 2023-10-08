@@ -14,14 +14,6 @@ function getStarterCode(problemData: ProblemSchema): string {
     }
   }
   return "";
-  // const starterCode: string | undefined = problemData?.starterCodes.filter(
-  //   (problem) => problem?.lang === "Python",
-  // )[0]?.code;
-
-  // if (starterCode == null) {
-  //   return "";
-  // }
-  // return starterCode;
 }
 
 function TextEditor({
@@ -32,7 +24,7 @@ function TextEditor({
   isChatVisible: boolean;
 }) {
   const { problemData } = useProblemDataContext()!;
-  const { setUserCode } = useUserDataContext();
+  const { userCode, setUserCode } = useUserDataContext();
   const monaco = useMonaco();
 
   useEffect(() => {
@@ -63,12 +55,13 @@ function TextEditor({
   return problemData ? (
     <div className="relative flex h-full w-full flex-col bg-darkBlue">
       <NavBar setChatVisible={setChatVisible} isChatVisible={isChatVisible} />
-      <div className="h-10 justify-center bg-grayBlue"></div>
+      <div className="h-14 justify-center bg-grayBlue"></div>
       <div className="h-[11*1rem] flex-grow overflow-auto">
         <Editor
           onChange={(value, event) => {
             setUserCode(value ?? "");
           }}
+          value={userCode}
           theme="CodeHintsTheme"
           className="h-full w-full"
           defaultLanguage="python"

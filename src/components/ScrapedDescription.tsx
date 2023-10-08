@@ -1,6 +1,10 @@
 import React from "react";
 
-function ScrapedDescription({ content }: { content: string | undefined }) {
+interface ScrapedDescription {
+  content: string | undefined;
+}
+
+function ScrapedDescription({ content }: ScrapedDescription) {
   return (
     <div
       className="scraped-description flex max-w-full flex-col flex-wrap overflow-x-auto overflow-y-auto break-all pb-4"

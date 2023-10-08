@@ -8,6 +8,10 @@ Welcome message to display only once when the user logs into two sum for the fir
 const Welcome = () => {
   const [showModal, setShowModal] = useState(true);
 
+  const closeModal1 = () => {
+    setShowModal((showModal) => !showModal);
+  };
+
   useEffect(() => {
     const hasVisited = localStorage.getItem("hasVisited");
 
@@ -19,18 +23,6 @@ const Welcome = () => {
 
     localStorage.setItem("hasVisited", "true");
   }, []);
-
-  const animateArrow = () => {
-    const arrow = document.getElementById("arrow");
-    arrow.classList.add("animate-bounce");
-    setTimeout(() => {
-      arrow.classList.remove("animate-bounce");
-    }, 1000);
-  };
-  const closeModal1 = () => {
-    setShowModal(false);
-    animateArrow();
-  };
 
   return (
     <div>
@@ -52,12 +44,15 @@ const Welcome = () => {
               width={200}
               height={200}
             />
-            <h1 className="font-titan text-6xl text-yellowAlert">
+            <h1 className="font-titan text-6xl text-yellowAlert drop-shadow-lg">
               Welcome to CodeHints!
             </h1>
             <h2 className="mt-5 text-center font-roboto text-2xl text-white drop-shadow-md ">
               Practicing Coding Interviews with AI
             </h2>
+            <h3 className="text-md mt-3 text-center font-roboto text-lightGreen drop-shadow-md">
+              Hover over the top of the editor to see more options!
+            </h3>
           </div>
         </div>
       )}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import ProblemDescription from "@/components/ProblemDescription";
 import ProblemDataProvider from "@/hooks/useProblemData";
@@ -30,7 +30,10 @@ function Solve() {
                 isChatVisible={isChatVisible}
               />
             </div>
-            <div className="row-span-1 w-full" style={{ marginBottom: -2 }}>
+            <div
+              className="relative row-span-1 w-full"
+              style={{ marginBottom: -2 }}
+            >
               <Footer />
             </div>
           </div>

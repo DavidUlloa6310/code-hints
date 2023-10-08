@@ -45,4 +45,8 @@ export const problemValidation = z.object({
   ),
 });
 
+export const allProblemsValidation = z.object({
+  data: z.array(problemValidation),
+});
+
 export type ProblemSchema = z.infer<typeof problemValidation>;

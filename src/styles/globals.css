@@ -6,28 +6,34 @@
   margin-left: 4px;
 }
 
-/* .description_container > *,
-.description_container pre,
-pre {
-  display: flex;
-  flex-wrap: unset;
-  word-break: break-all;
-  width: 100%;
-} */
-
-.scraped-description {
-}
-
-.scraped-description p {
+.scraped-description > p {
   text-wrap: wrap;
-  width: 30rem;
-}
-
-.scraped-description .example {
-  font-family: Titan One;
+  width: 24.5rem;
+  word-break: keep-all;
 }
 
 .scraped-description pre {
   text-wrap: wrap;
-  width: 30rem;
+  word-break: keep-all;
+  width: 24.5rem;
+  margin: 0.5rem 0 1.5rem;
+  border-left: solid 3px theme("colors.nonWhite");
+  padding-left: 0.5rem;
+  color: theme("colors.lightGrayText");
+}
+
+.scraped-description pre strong {
+  color: theme("colors.darkGray");
+  font-family: 300;
+}
+
+.scraped-description code {
+  background-color: theme("colors.nonWhite");
+  border: 1px solid theme("colors.lightGrayText");
+  padding: 0.25px 5px;
+  border-radius: 0.25rem;
+}
+
+.scraped-description ul {
+  list-style-type: circle;
 }

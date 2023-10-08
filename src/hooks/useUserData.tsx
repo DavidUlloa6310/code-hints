@@ -1,10 +1,19 @@
-import React, { ReactNode, useContext, useState } from "react";
+import React, { type ReactNode, useContext, useState } from "react";
+
+interface SubmitResponse {
+  solution?: Array<{
+    testCase: string;
+    expected: string;
+    output: string;
+  }>;
+  error?: string;
+}
 
 interface UserDataValues {
   userCode: string;
   setUserCode: React.Dispatch<React.SetStateAction<string>>;
-  codeOutput: string;
-  setCodeOutput: React.Dispatch<React.SetStateAction<string>>;
+  codeOutput: null | SubmitResponse;
+  setCodeOutput: React.Dispatch<React.SetStateAction<SubmitResponse | null>>;
 }
 
 const UserDataContext = React.createContext<UserDataValues>({
@@ -12,7 +21,7 @@ const UserDataContext = React.createContext<UserDataValues>({
   setUserCode: () => {
     return;
   },
-  codeOutput: "",
+  codeOutput: null,
   setCodeOutput: () => {
     return;
   },
@@ -20,7 +29,7 @@ const UserDataContext = React.createContext<UserDataValues>({
 
 export function UserDataProvider({ children }: { children: ReactNode }) {
   const [userCode, setUserCode] = useState<string>("");
-  const [codeOutput, setCodeOutput] = useState<string>("");
+  const [codeOutput, setCodeOutput] = useState<SubmitResponse | null>(null);
   return (
     <UserDataContext.Provider
       value={{ userCode, setUserCode, codeOutput, setCodeOutput }}

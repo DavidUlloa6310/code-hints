@@ -8,6 +8,15 @@ import type { ProblemSchema } from "@/schemas/problemSchema";
 const { publicRuntimeConfig } = getConfig();
 let json: ProblemSchema[];
 
+export const getLeetcodeProblems = (): ProblemSchema[] => {
+  const filePath = publicRuntimeConfig.problemSetPath;
+  const data: string = fs.readFileSync(`public${filePath}`).toString();
+  if (json == null) {
+    json = JSON.parse(data);
+  }
+  return json;
+};
+
 export const getLeetcodeProblemFromId = (problemId: string) => {
   const filePath = publicRuntimeConfig.problemSetPath;
   const data: string = fs.readFileSync(`public${filePath}`).toString();

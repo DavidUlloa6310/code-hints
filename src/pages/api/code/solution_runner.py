@@ -43,7 +43,10 @@ if len(sys.argv) != 3:
     sys.stderr.flush()
 
 problem = json.loads(b64decode(sys.argv[1]))
-user_code = b64decode(sys.argv[2]).decode('utf-8')
+try:
+    user_code = b64decode(sys.argv[2]).decode('utf-8')
+except IndexError:
+    raise "Invalid submission!"
 
 # get the optimal solution and test cases for the problem
 optimal_code = get_optimal_code(problem['solution']['implementations'])
