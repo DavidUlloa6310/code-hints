@@ -30,7 +30,7 @@ export function ChatBox({ setIsVisible }: ChatBoxProps) {
         y: 435,
       }}
     >
-      <div className="absolute z-20 flex max-h-[700px] min-h-[350px] min-w-[500px] max-w-[600px] flex-col rounded-md border-2 border-nonWhite bg-darkBlue px-4 py-0 shadow-lg">
+      <div className="absolute z-20 flex max-h-[600px] min-h-[400px] min-w-[575px] max-w-[600px] flex-col rounded-md border-2 border-nonWhite bg-darkBlue px-4 py-0 shadow-lg">
         <div className="handle flex flex-row items-center justify-between">
           <div className="flex items-center">
             <div

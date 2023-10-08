@@ -11,4 +11,45 @@
     stroke: #8BA8B5; /* Change the edge color */
     stroke-width: 2; /* Adjust the edge thickness */
   }
+
+  /* Reduce the size of the image to 300x300 */
+#graphviz-graph svg {
+  width: 300px;
+  height: 300px;
+}
+
+/* #graphviz-graph {
+  width: 400px;
+} */
+
+/* Remove the white background in favor of transparent */
+ #graphviz-graph polygon[fill="#ffffff"] {
+  fill: transparent;
+}
+
+/* Make the background of the nodes white */
+ #graphviz-graph .node ellipse[fill="none"] {
+  fill: white;
+  stroke: #FED004; /* Add a border to the nodes */
+}
+
+/* cmake the arrows yellow */
+ #graphviz-graph polygon[fill="#000000"] {
+  fill: #FED004;
+  stroke: #FED004;
+}
+
+/* Spice up the styling for edges */
+ #graphviz-graph .edge path {
+  stroke: #FED004; /* Color the edges */
+  stroke-width: 1.5; /* Adjust the edge thickness */
+  fill: none;
+}
+
+/* Spice up the styling for text */
+ #graphviz-graph text {
+  font-family: 'Helvetica', Arial, sans-serif;
+  font-size: 14px;
+  fill: #000000; /* Text color */
+}
   

@@ -32,10 +32,14 @@ export const ChatBubble = ({
         <div
           className={`rounded-md border-2 p-3 shadow-md ${
             agent !== "human"
-              ? "max-w-[75%] border-[#5F5858] bg-black text-white"
+              ? `max-w-[75%] border-[#5F5858] bg-black text-white ${
+                  format === "graphviz" ? "min-w-[75%]" : ""
+                }`
               : "min-w-[25%] border-[#FEC800] bg-[#8BA8B5] text-black shadow-md"
           } ${
-            format === "graphviz" ? "overflow-hidden; w-full; p-0; h-full" : ""
+            format === "graphviz"
+              ? "min-width-[75%] h-full w-full overflow-hidden p-0"
+              : ""
           }`}
         >
           {format === "graphviz" ? (
