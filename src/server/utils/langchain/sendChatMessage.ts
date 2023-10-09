@@ -131,7 +131,7 @@ const PROMPT = new PromptTemplate({
 export const sendChatMessage = async (data: ChatSchema) => {
   try {
     // fetch the problem description from leetcode
-    const problem = getProblemById(data.problemId);
+    const problem = await getProblemById(data.problemId);
     if (problem == null) {
       throw new Error("Cannot find problem by that problem Id");
     }

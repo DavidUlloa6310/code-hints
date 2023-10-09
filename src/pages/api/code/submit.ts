@@ -15,7 +15,10 @@ interface RequestBdoy {
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SOLUTION_RUNNER_SCRIPT = path.join(__dirname, "solution_runner.py");
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   let problemId: RequestBdoy["problemId"],
     language: RequestBdoy["language"],
     userCode: RequestBdoy["code"];
@@ -56,7 +59,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   // fetch the problem to pass to the execution script
-  const problem = getProblemById(String(problemId));
+  const problem = await getProblemById(String(problemId));
   if (problem == null) {
     return res
       .status(404)
