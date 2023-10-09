@@ -1,6 +1,6 @@
 import { useProblemDataContext } from "@/hooks/useProblemData";
 import { useUserDataContext } from "@/hooks/useUserData";
-import { Dispatch, ReactNode, SetStateAction, useEffect } from "react";
+import { type ReactNode, useEffect } from "react";
 import { BsFillCircleFill } from "react-icons/bs";
 import { HiArrowLongRight } from "react-icons/hi2";
 
@@ -27,11 +27,11 @@ function OutputText({ children, passed }: OutputText) {
 
 export default function Results({ showResults }: ResultsProps) {
   const { codeOutput, setCodeOutput } = useUserDataContext();
-  const { problemData } = useProblemDataContext();
+  const { currentProblem } = useProblemDataContext();
 
   useEffect(() => {
     setCodeOutput(null);
-  }, [problemData]);
+  }, [currentProblem, setCodeOutput]);
 
   return (
     <div

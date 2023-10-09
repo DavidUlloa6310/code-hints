@@ -7,7 +7,11 @@ import { Editor } from "@monaco-editor/react";
 import { useProblemDataContext } from "@/hooks/useProblemData";
 import type { ProblemSchema } from "@/schemas/problemSchema";
 
-function getStarterCode(problemData: ProblemSchema): string {
+function getStarterCode(problemData: ProblemSchema | null): string {
+  if (problemData == null) {
+    return "";
+  }
+
   for (const starterCode of problemData.starterCodes) {
     if (starterCode.lang.toLowerCase() === "python3") {
       return starterCode.code;
@@ -23,7 +27,7 @@ function TextEditor({
   setChatVisible: (visible: boolean) => void;
   isChatVisible: boolean;
 }) {
-  const { problemData } = useProblemDataContext()!;
+  const { currentProblem } = useProblemDataContext()!;
   const { userCode, setUserCode } = useUserDataContext();
   const monaco = useMonaco();
 
@@ -52,7 +56,7 @@ function TextEditor({
     monaco.editor.setTheme("CodeHintsTheme");
   }, [monaco]);
 
-  return problemData ? (
+  return currentProblem !== null ? (
     <div className="relative flex h-full w-full flex-col bg-darkBlue">
       <NavBar setChatVisible={setChatVisible} isChatVisible={isChatVisible} />
       <div className="h-14 justify-center bg-grayBlue"></div>
@@ -66,7 +70,7 @@ function TextEditor({
           theme="CodeHintsTheme"
           className="h-full w-full"
           defaultLanguage="python"
-          defaultValue={getStarterCode(problemData)}
+          defaultValue={getStarterCode(currentProblem)}
         />
       </div>
     </div>

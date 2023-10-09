@@ -15,7 +15,7 @@ export const useChat = () => {
   const [chat, setChat] = useState<AgentMessage[]>(INITIAL_CHAT);
   const [isLoading, setIsLoading] = useState(false);
   const { userCode, codeOutput } = useUserDataContext();
-  const { problemData } = useProblemDataContext();
+  const { currentProblem } = useProblemDataContext();
 
   const sendChat = async (message: string) => {
     setIsLoading(true);
@@ -41,7 +41,7 @@ export const useChat = () => {
         currentMessage: message,
         userCode: userCode,
         userCodeOutput: codeOutput?.error ?? "",
-        problemId: problemData!.frontendQuestionId,
+        problemId: currentProblem!.frontendQuestionId,
       }),
     });
 

@@ -2,7 +2,6 @@
 import React, { useEffect } from "react";
 import { useProblemDataContext } from "@/hooks/useProblemData";
 import LogoHeader from "./LogoHeader";
-import { problemValidation } from "@/schemas/problemSchema";
 import ScrapedDescription from "./ScrapedDescription";
 
 import { GoDotFill } from "react-icons/go";
@@ -23,9 +22,16 @@ function DifficultyLabel({ difficulty, color }: DifficultyLabel) {
 }
 
 function ProblemDescription() {
-  const { problemData, setProblemData } = useProblemDataContext()!;
+  const { currentProblem, setCurrentProblemById } = useProblemDataContext()!;
   const router = useRouter();
   const { problemId } = router.query;
+
+  useEffect(() => {
+    if (problemId == null) {
+      return;
+    }
+    setCurrentProblemById(problemId as string);
+  }, [problemId, setCurrentProblemById]);
 
   const difficultyColor: Record<string, string> = {
     Easy: "text-lightGreen",
@@ -33,46 +39,24 @@ function ProblemDescription() {
     Hard: "text-red",
   };
 
-  useEffect(() => {
-    async function fetchData() {
-      if (problemId == null) {
-        return;
-      }
-
-      try {
-        const response = await fetch(`/api/problems/${problemId as string}`);
-        const data: unknown = await response.json();
-        const problemData = problemValidation.safeParse(data);
-        if (problemData.success) {
-          setProblemData!(problemData.data);
-        } else {
-          console.error("Error parsing problem data:", problemData.error);
-        }
-      } catch (error: unknown) {
-        console.error("Error fetching problem data:", error as Error);
-      }
-    }
-    void fetchData();
-  }, [problemId, setProblemData]);
-
   return (
     <section className="col-span-5 flex h-screen flex-col items-center justify-center bg-babyBlue">
       <LogoHeader />
       <article className="h-[80vh] w-[90%] overflow-y-scroll rounded-md bg-white bg-opacity-90 p-5 shadow-md">
         <header className="relative flex w-full flex-row items-center justify-between">
           <h3 className="font-titan">{`Question #${(
-            Number(problemData?.frontendQuestionId) + 1
+            Number(currentProblem?.frontendQuestionId) + 1
           )?.toString()}`}</h3>
           <DifficultyLabel
-            difficulty={problemData?.difficulty as string}
-            color={difficultyColor[problemData?.difficulty!] ?? ""}
+            difficulty={currentProblem?.difficulty as string}
+            color={difficultyColor[currentProblem?.difficulty!] ?? ""}
           />
         </header>
         <h2 className="mt-4 font-roboto text-2xl font-bold">
-          {problemData?.title}
+          {currentProblem?.title}
         </h2>
         <hr className="my-3 h-1 w-full rounded bg-gray-300" />
-        <ScrapedDescription content={problemData?.content} />
+        <ScrapedDescription content={currentProblem?.content} />
       </article>
     </section>
   );

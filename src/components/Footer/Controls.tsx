@@ -15,7 +15,7 @@ export default function Controls({
   setShowResults,
 }: ControlsProps) {
   const [showTags, setShowTags] = useState(false);
-  const { problemData } = useProblemDataContext()!;
+  const { currentProblem } = useProblemDataContext()!;
   const { userCode, codeOutput, setCodeOutput } = useUserDataContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -24,7 +24,7 @@ export default function Controls({
     const request = await fetch("/api/code/submit", {
       method: "POST",
       body: JSON.stringify({
-        problemId: problemData?.frontendQuestionId,
+        problemId: currentProblem?.frontendQuestionId,
         language: "python3",
         code: userCode,
       }),
@@ -52,7 +52,7 @@ export default function Controls({
               height={30}
             />
             <div className="flex items-center justify-start gap-4 pr-10 text-center text-sm">
-              {problemData?.topicTags.map(({ name }) => (
+              {currentProblem?.topicTags.map(({ name }) => (
                 <h2 key={name}>{name}</h2>
               ))}
             </div>
