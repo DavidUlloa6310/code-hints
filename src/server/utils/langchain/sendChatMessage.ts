@@ -4,7 +4,7 @@ import { BufferMemory, ChatMessageHistory } from "langchain/memory";
 import { ConversationChain, LLMChain } from "langchain/chains";
 import type { ChatSchema } from "@/schemas/chatSchemas";
 import { convertChatHistory } from "./convertChatHistory";
-import { getLeetcodeProblemFromId } from "../leetcode";
+import { getProblemById } from "../leetcode";
 import {
   StructuredOutputParser,
   OutputFixingParser,
@@ -131,9 +131,12 @@ const PROMPT = new PromptTemplate({
 export const sendChatMessage = async (data: ChatSchema) => {
   try {
     // fetch the problem description from leetcode
-    const { content: problemDescription, solution } = getLeetcodeProblemFromId(
-      data.problemId,
-    );
+    const problem = getProblemById(data.problemId);
+    if (problem == null) {
+      throw new Error("Cannot find problem by that problem Id");
+    }
+
+    const { content: problemDescription, solution } = problem;
 
     const pythonCode = solution.implementations[0]?.find(
       (language: { code?: string; langSlug: string }) =>
