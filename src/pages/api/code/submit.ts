@@ -4,6 +4,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { execSync } from "child_process";
 import path from "path";
 import { fileURLToPath } from "url";
+import { getProblemById } from "@/server/utils/leetcode";
 
 interface RequestBdoy {
   problemId: number;
@@ -14,10 +15,7 @@ interface RequestBdoy {
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SOLUTION_RUNNER_SCRIPT = path.join(__dirname, "solution_runner.py");
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
   let problemId: RequestBdoy["problemId"],
     language: RequestBdoy["language"],
     userCode: RequestBdoy["code"];
@@ -57,17 +55,17 @@ export default async function handler(
       );
   }
 
-  problemId = parseInt(problemId as unknown as string);
-
   // fetch the problem to pass to the execution script
-  const problemReq = await fetch(
-    `http://${req.headers.host}/api/problems/${problemId}`,
-  );
+  const problem = getProblemById(String(problemId));
+  if (problem == null) {
+    return res
+      .status(404)
+      .json({ message: "Could not find problem by passed in id" });
+  }
 
-  const problem = JSON.stringify(await problemReq.json());
   let solutionRunner: Buffer;
 
-  const encoded_problem = btoa(problem);
+  const encoded_problem = btoa(JSON.stringify(problem));
   const encoded_user_code = btoa(userCode);
 
   try {

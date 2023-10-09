@@ -1,51 +1,22 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/non-nullable-type-assertion-style */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import getConfig from "next/config";
+import { type ProblemSchema } from "@/schemas/problemSchema";
+import path from "path";
 import fs from "fs";
-import type { ProblemSchema } from "@/schemas/problemSchema";
 
-const { publicRuntimeConfig } = getConfig();
-let json: ProblemSchema[];
+export const getProblemById = (problemId: string): ProblemSchema | null => {
+  const filePath = path.join(process.cwd(), "problem_set.json");
+  const fileContent = fs.readFileSync(filePath, "utf8");
+  const problemSet: ProblemSchema[] = JSON.parse(fileContent);
+  const problem = problemSet.find((problem) => {
+    return problem.frontendQuestionId === problemId;
+  });
 
-export const getLeetcodeProblems = (): ProblemSchema[] => {
-  // const filePath = publicRuntimeConfig.problemSetPath;
-  // const fullPath = `${
-  //   process.env.NEXT_PUBLIC_IS_HOSTED === "true" ? "" : "public"
-  // }${filePath}`;
-  // console.log(fullPath);
-  const data: string = fs
-    .readFileSync(process.env.PROBLEM_PATH as string)
-    .toString();
-  if (json == null) {
-    json = JSON.parse(data);
+  if (problem == null) {
+    return null;
   }
-  return json;
-};
-
-export const getLeetcodeProblemFromId = (problemId: string) => {
-  // const filePath = publicRuntimeConfig.problemSetPath;
-  // const fullPath = `${
-  //   process.env.NEXT_PUBLIC_IS_HOSTED === "true" ? "" : "public"
-  // }${filePath}`;
-  // console.log(fullPath);
-  const data: string = fs
-    .readFileSync(process.env.PROBLEM_PATH as string)
-    .toString();
-  if (json == null) {
-    json = JSON.parse(data);
-  }
-
-  // console.log("problem id is...", problemId);
-
-  const problem: ProblemSchema | undefined = json.find(
-    (problem: ProblemSchema) => problem.frontendQuestionId === problemId,
-  );
-
-  if (problem == undefined) {
-    throw new Error(`Problem ${problemId} not found`);
-  }
-
   return problem;
 };
