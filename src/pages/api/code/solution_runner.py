@@ -16,6 +16,7 @@ def test_solution(code: str, class_name: str, function_name: str, t_input: str):
     t_input = t_input.replace("\n", ", ")
 
     formatted_code = "from typing import *\n"
+    formatted_code += "import heapq\n"
     formatted_code += f"{code}\n"
     formatted_code += f"sol = {class_name}()\n"
     formatted_code += f"result = sol.{function_name}({t_input})\n"

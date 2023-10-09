@@ -22,7 +22,7 @@ export default async function handler(
     language: RequestBdoy["language"],
     userCode: RequestBdoy["code"];
 
-  const supportedLanguages = ["python3"];
+  const supportedLanguages = ["python3", "python"];
 
   try {
     if (typeof req.body == "string") {
