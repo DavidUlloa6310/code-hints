@@ -1,4 +1,4 @@
-# [CodeHints](www.codehints.study) - Your AI Interview Buddy!
+# [CodeHints](https://www.codehints.study) - Your AI Interview Buddy!
 
 CodeHints is an AI chat-guided software that helps you with your technical interview practice problems on LeetCode!
 
